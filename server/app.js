@@ -2,11 +2,27 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 // session数据存储空间一般是在内存中开辟的，那么在内存中的session显然是存在极大的数据丢失的隐患的，比如系统掉电，所有的会话数据就会丢失，如果是证券交易所那么这种后果的严重性可想而知。所以为了解决这个问题可以将session持久化保存，比如保存到数据库。那么这篇博客就是介绍session持久化保存到mongoDB的工具connect-mongo
-
-var MongoStore = require('connect-mongo')(express);
-var settings = require('./settings');
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var settings = require('./settings');
 
+/*
+cookie-parser
+作用： 方便操作客户端中的cookie值
+1、安装cookie - parser第三方cookie操作模块
+
+npm install cookie - parser - S
+
+2、引入
+
+const cookieParser = require('cookie-parser');
+app.use(cookieParser('123456')); //使用cookie-parser中间件，传入签名123456进行加密
+
+3、设置cookie, 需要设置signed签名
+
+res.cookies('key', 'value', option)
+
+*/
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
@@ -79,6 +95,10 @@ app.use(cookieParser());
     7. 如果通过了验证， 根据该ID从Redis中取出对应的用户对象， 查看该对象的状态并继续执行业务逻辑。
 
 
+Session中包含的数据不会保存在cookie中,仅仅是在cookie中保存了一个SessionId而已.实际的session的数据保存在服务端.
+
+简单理解就是一个Map,键对应的是session id值保存在cookie中,值对应的是用户保存在服务端的数据.
+
     */
 // express.session() 提供会话支持
 // secret 用来防止篡改cookie
@@ -90,11 +110,12 @@ app.use(session({
     key: settings.db, //cookie name
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 30
-    },
-    store: new MongoStore({
-        db: settings.db
-    })
+    }
+    // store: new MongoStore({
+    // db: settings.db
+    // })
 }))
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRouter);
