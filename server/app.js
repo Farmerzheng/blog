@@ -79,29 +79,31 @@ session数据存储空间一般是在内存中开辟的，那么在内存中的s
     */
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-
-var loginRouter = require('./routes/login');
-var logoutRouter = require('./routes/logout');
-var postRouter = require('./routes/post');
-var registerRouter = require('./routes/register');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var settings = require('./settings');
 const config = require('./config');
 
+// 引入路由
+var loginRouter = require('./routes/login');
+var logoutRouter = require('./routes/logout');
+var postRouter = require('./routes/post');
+var registerRouter = require('./routes/register');
+var app = express();
+
+
+/*
+在使用mongodb存储session时首先要加载模块：connect-mongo以及mongoose
+*/
+var mongoose = require("mongoose");
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-
-const mongoose = require("mongoose");
-
 // mongoose以非授权的方式启动
 mongoose.connect(config.dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-
 /*链接成功*/
 mongoose.connection.on("connected", function() {
         console.log("mongodb connected success");
@@ -115,10 +117,30 @@ mongoose.connection.on("disconnected", function() {
     console.log("mongodb connected disconnected");
 })
 
-
-var app = express();
-
-
+//express-session 的主要的方法是 session(options)
+app.use(session({
+    /* secret 的值建议使用随机字符串,通过设置的 secret 字符串， 来计算 hash值并放在 cookie 中， 使产生的 signedCookie 防篡改。为了安全性的考虑设置secret属性*/
+    secret: settings.cookieSecret,
+    key: settings.db, //存储到客户端的cookie的名字
+    /**
+    设置存放 session id 的 cookie 的相关选项， 默认为
+        (default: {
+                path: ‘ /’, 
+                httpOnly: true,
+                secure: false,
+                maxAge: null
+         })
+     */
+    cookie: {
+        maxAge: 1000 * 60
+    },
+    resave: true, // 即使 session 没有被修改，也保存 session 值，默认为 true
+    saveUninitialized: false,
+    // store: session 的存储方式， 默认存放在内存中， 也可以使用 redis， mongodb 等。
+    store: new MongoStore({
+        mongooseConnection: mongoose.connection //使用已有的数据库连接
+    })
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -129,26 +151,12 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: false
 }));
+
 // cookie  解析的中间件
 app.use(cookieParser());
 
-// express.session() 提供会话支持
-// secret 用来防止篡改cookie
-// key cookie的名字
-// maxAge: cookie的生存期
-// store 把会话信息存储在数据库中，以免丢失
-app.use(session({
-    secret: settings.cookieSecret,
-    key: settings.db, //cookie name
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 30
-    },
-    resave: true,
-    saveUninitialized: true
-        // store: new MongoStore({
-        // db: settings.db
-        // })
-}))
+
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -7,7 +7,7 @@ User = require('../models/user.js');
 router.post('/', function(req, res, next) {
     // req.body  POST请求信息解析过后的对象
     console.log(req.body, req)
-    let name = req.body.password,
+    let name = req.body.name,
         password = req.body.password,
         password_repeat = req.body.password_repeat,
         email = req.body.email;
@@ -51,13 +51,14 @@ router.post('/', function(req, res, next) {
                         message: '插入用户失败'
                     })
                 } else {
+
+                    // 用户信息存入session
+                    req.session.user = user;
                     res.json({
                         status: "200",
                         message: '插入用户成功'
                     })
 
-                    // 用户信息存入session
-                    req.session.user = req.body;
                 }
 
             });
