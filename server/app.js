@@ -1,11 +1,3 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-// session数据存储空间一般是在内存中开辟的，那么在内存中的session显然是存在极大的数据丢失的隐患的，比如系统掉电，所有的会话数据就会丢失，如果是证券交易所那么这种后果的严重性可想而知。所以为了解决这个问题可以将session持久化保存，比如保存到数据库。那么这篇博客就是介绍session持久化保存到mongoDB的工具connect-mongo
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
-var settings = require('./settings');
-
 /*
 cookie-parser
 作用： 方便操作客户端中的cookie值
@@ -23,28 +15,7 @@ app.use(cookieParser('123456')); //使用cookie-parser中间件，传入签名12
 res.cookies('key', 'value', option)
 
 */
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 
-
-var loginRouter = require('./routes/login');
-var logoutRouter = require('./routes/logout');
-var postRouter = require('./routes/post');
-var registerRouter = require('./routes/register');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({
-    extended: false
-}));
-// cookie  解析的中间件
-app.use(cookieParser());
 /*
 第一部分 session概述
 1.1 session 是什么 ?
@@ -67,18 +38,22 @@ app.use(cookieParser());
     一些客户端信息， 比如页面布局以及搜索历史等等。
     Session的典型应用场景是用户登录某网站之后， 将其登录信息放入session， 在以后的每次请求中查询相应
     的登录信息以确保该用户合法。 当然还是有购物车等等经典场景；
+
     2. 安全性
     cookie将信息保存在客户端， 如果不进行加密的话， 无疑会暴露一些隐私信息， 安全性很差， 一般情况下敏
     感信息是经过加密后存储在cookie中， 但很容易就会被窃取。 而session只会将信息存储在服务端， 如果存
     储在文件或数据库中， 也有被窃取的可能， 只是可能性比cookie小了太多。
     Session安全性方面比较突出的是存在会话劫持的问题， 这是一种安全威胁。 总体来讲， session的安全性
     要高于cookie；
+
     3. 性能
     Cookie存储在客户端， 消耗的是客户端的I / O和内存， 而session存储在服务端， 消耗的是服务端的资源。
     但是session对服务器造成的压力比较集中， 而cookie很好地分散了资源消耗， 就这点来说， cookie是要优于session的；
+
     4. 时效性
     Cookie可以通过设置有效期使其较长时间内存在于客户端， 而session一般只有比较短的有效期（ 用户主动销毁
     session或关闭浏览器后引发超时）；
+    
     5. 其他
     Cookie的处理在开发中没有session方便。 而且cookie在客户端是有数量和大小的限制的， 而session的大小
     却只以硬件为限制， 能存储的数据无疑大了太多。
@@ -99,7 +74,64 @@ Session中包含的数据不会保存在cookie中,仅仅是在cookie中保存了
 
 简单理解就是一个Map,键对应的是session id值保存在cookie中,值对应的是用户保存在服务端的数据.
 
+session数据存储空间一般是在内存中开辟的，那么在内存中的session显然是存在极大的数据丢失的隐患的，比如系统掉电，所有的会话数据就会丢失，如果是证券交易所那么这种后果的严重性可想而知。所以为了解决这个问题可以将session持久化保存，比如保存到数据库。session持久化保存到mongoDB的需要用到工具connect-mongo
+
     */
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+
+var loginRouter = require('./routes/login');
+var logoutRouter = require('./routes/logout');
+var postRouter = require('./routes/post');
+var registerRouter = require('./routes/register');
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var settings = require('./settings');
+const config = require('./config');
+
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
+const mongoose = require("mongoose");
+
+// mongoose以非授权的方式启动
+mongoose.connect(config.dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+/*链接成功*/
+mongoose.connection.on("connected", function() {
+        console.log("mongodb connected success");
+    })
+    /* 链接失败*/
+mongoose.connection.on("error", function() {
+        console.log("mongodb connected fail");
+    })
+    /* 断开链接*/
+mongoose.connection.on("disconnected", function() {
+    console.log("mongodb connected disconnected");
+})
+
+
+var app = express();
+
+
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: false
+}));
+// cookie  解析的中间件
+app.use(cookieParser());
+
 // express.session() 提供会话支持
 // secret 用来防止篡改cookie
 // key cookie的名字
@@ -110,10 +142,12 @@ app.use(session({
     key: settings.db, //cookie name
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 30
-    }
-    // store: new MongoStore({
-    // db: settings.db
-    // })
+    },
+    resave: true,
+    saveUninitialized: true
+        // store: new MongoStore({
+        // db: settings.db
+        // })
 }))
 
 app.use(express.static(path.join(__dirname, 'public')));
