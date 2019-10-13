@@ -17,7 +17,14 @@ function logoutHandler() {
 $("#publish").on("click", publishHandler);
 
 function publishHandler() {
-    window.location.href = "/post";
+    window.location.href = "/publish";
+}
+
+// 上传图片
+$("#upload").on("click", uploadHandler);
+
+function uploadHandler() {
+    window.location.href = "/upload";
 }
 
 // 读取文章信息
@@ -26,7 +33,7 @@ $.ajax({
     method: "GET",
     url: "http://localhost:3000/readArticle",
     success: function(response) {
-        console.log(response);
+        // console.log(response);
 
         if (response.status == "100") {
             alert("请先登录");
@@ -36,6 +43,7 @@ $.ajax({
         if (response.status == "200") {
             // 读取成功
             let articles = response.result;
+            // console.log(response)
 
             for (let i = 0; i < articles.length; i++) {
                 let content = $(
@@ -50,11 +58,9 @@ $.ajax({
                     articles[i].time +
                     "</span>" +
                     "</p>" +
-                    "<p class='article'>" +
-                    articles[i].article +
-                    "</p>"
+                    articles[i].article
                 );
-                console.log(articles[i].time)
+                // console.log(articles[i].time)
                 $("#article").append(content);
             }
         }

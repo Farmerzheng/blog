@@ -4,19 +4,19 @@ var crypto = require('crypto');
 User = require('../models/user.js');
 
 // 页面权限控制
-// router.get('/', function(req, res, next) {
-//     // ，检测用户是否登录
-//     console.log(req.session.user)
-//     if (req.session.user) {
-//         //         // 用户已经登录,返回之前的页面
-//         res.redirect('/');
-//     } else {
-//         // next函数主要是用来确保所有注册的中间件被一个接一个的执行， 那么我们就应该在所有的中间件中调用next函数， 但有一个特例， 如果我们定义的中间件终结了本次请求， 那就不应该再调用next函数， 否则就可能会出问题
+router.get('/', function(req, res, next) {
+    // ，检测用户是否登录
+    console.log(req.session.user)
+    if (req.session.user) {
+        //         // 用户已经登录,返回之前的页面
+        res.redirect('/');
+    } else {
+        // next函数主要是用来确保所有注册的中间件被一个接一个的执行， 那么我们就应该在所有的中间件中调用next函数， 但有一个特例， 如果我们定义的中间件终结了本次请求， 那就不应该再调用next函数， 否则就可能会出问题
 
-//         next() //移交给 app.use(express.static(path.join(__dirname, 'public')));处理
-//     }
+        next() //移交给 app.use(express.static(path.join(__dirname, 'public')));处理
+    }
 
-// })
+})
 
 /* 注册页 */
 router.post('/', function(req, res, next) {

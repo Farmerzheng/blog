@@ -1,4 +1,8 @@
 /*
+c什么是cookie
+
+Cookie设计的初衷是 维持浏览器和服务端的状态。 http是无状态的， 服务端不能跟踪客户端的状态。 浏览器第一次向服务器发送请求， 服务器会返回一个cookie给客户端浏览器， 浏览器下一次发送请求时， 会携带cookie。
+
 cookie-parser
 作用： 方便操作客户端中的cookie值
 1、安装cookie - parser第三方cookie操作模块
@@ -76,6 +80,17 @@ Session中包含的数据不会保存在cookie中,仅仅是在cookie中保存了
 
 session数据存储空间一般是在内存中开辟的，那么在内存中的session显然是存在极大的数据丢失的隐患的，比如系统掉电，所有的会话数据就会丢失，如果是证券交易所那么这种后果的严重性可想而知。所以为了解决这个问题可以将session持久化保存，比如保存到数据库。session持久化保存到mongoDB的需要用到工具connect-mongo
 
+使用express - session来保存登录状态
+
+1） 什么是session ?
+
+    由于HTTP是无状态的， 所以服务器在每次连接中持续保存客户端的私有数据此时需要结合cookie技术。 通过session 会话机制， 在服务器端保存每个http请求的私有数据。
+
+2） session原理
+
+在服务器内存中开辟一块地址空间， 专门存放每个客户端的私有数据， 每个客户端根据cookie中保持的sessionId， 可以获取到session数据。
+
+express - session 是expressjs的一个中间件用来创建session。 服务器端生成了一个sessionn - id， 客户端使用了cookie保存了session - id这个加密的请求信息， 而将用户请求的数据保存在服务器端
     */
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -97,6 +112,7 @@ var app = express();
 在使用mongodb存储session时首先要加载模块：connect-mongo以及mongoose
 */
 var mongoose = require("mongoose");
+// 引入express-session中间件，req上面会增加session属性
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 // mongoose以非授权的方式启动
@@ -117,11 +133,14 @@ mongoose.connection.on("disconnected", function() {
     console.log("mongodb connected disconnected");
 })
 
+// cookie  解析的中间件
+// app.use(cookieParser(config.cookieSecret)); //与session 中的 secret 一致
+
 //express-session 的主要的方法是 session(options)
 app.use(session({
     /* secret 的值建议使用随机字符串,通过设置的 secret 字符串， 来计算 hash值并放在 cookie 中， 使产生的 signedCookie 防篡改。为了安全性的考虑设置secret属性*/
     secret: config.cookieSecret,
-    key: config.db, //存储到客户端的cookie的名字
+    // name: config.db, //设置cookie中，保存session的字段名称，默认为connect.sid
     /**
     设置存放 session id 的 cookie 的相关选项， 默认为
         (default: {
@@ -131,11 +150,13 @@ app.use(session({
                 maxAge: null
          })
      */
+    // 使用cookie配置项, 可以将session数据保存在cookie中
     cookie: {
-        maxAge: 1000 * 60 //存储时间
+        //存储时间
+        maxAge: 1000 * 60 * 60
     },
     resave: true, // 即使 session 没有被修改，也保存 session 值，默认为 true
-    saveUninitialized: false,
+    saveUninitialized: false, //强制未初始化的session保存到数据库
     // store: session 的存储方式， 默认存放在内存中， 也可以使用 redis， mongodb 等。
     store: new MongoStore({
         mongooseConnection: mongoose.connection //使用已有的数据库连接
@@ -152,8 +173,7 @@ app.use(express.urlencoded({
     extended: false
 }));
 
-// cookie  解析的中间件
-app.use(cookieParser());
+
 
 app.use('/', indexRouter);
 app.use('/publish', publishRouter);
