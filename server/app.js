@@ -82,13 +82,13 @@ var logger = require('morgan');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var settings = require('./settings');
 const config = require('./config');
 
 // 引入路由
+var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
-var postRouter = require('./routes/post');
+var publishRouter = require('./routes/publish');
 var registerRouter = require('./routes/register');
 var app = express();
 
@@ -120,8 +120,8 @@ mongoose.connection.on("disconnected", function() {
 //express-session 的主要的方法是 session(options)
 app.use(session({
     /* secret 的值建议使用随机字符串,通过设置的 secret 字符串， 来计算 hash值并放在 cookie 中， 使产生的 signedCookie 防篡改。为了安全性的考虑设置secret属性*/
-    secret: settings.cookieSecret,
-    key: settings.db, //存储到客户端的cookie的名字
+    secret: config.cookieSecret,
+    key: config.db, //存储到客户端的cookie的名字
     /**
     设置存放 session id 的 cookie 的相关选项， 默认为
         (default: {
@@ -132,7 +132,7 @@ app.use(session({
          })
      */
     cookie: {
-        maxAge: 1000 * 60
+        maxAge: 1000 * 60 //存储时间
     },
     resave: true, // 即使 session 没有被修改，也保存 session 值，默认为 true
     saveUninitialized: false,
@@ -144,7 +144,7 @@ app.use(session({
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -155,15 +155,19 @@ app.use(express.urlencoded({
 // cookie  解析的中间件
 app.use(cookieParser());
 
+app.use('/', indexRouter);
+app.use('/publish', publishRouter);
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
 
+
+// 用户登录了就没有访问注册页面的权利
+app.use('/register', registerRouter);
 
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
-app.use('/post', postRouter);
-app.use('/register', registerRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -178,7 +182,7 @@ app.use(function(err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    // res.render('error');
 });
 
 module.exports = app;

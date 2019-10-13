@@ -23,7 +23,7 @@
              if (response.status == '200') {
                  alert('登录成功');
                  //  返回主页
-                 window.location.href = '/index.html'
+                 window.location.href = '/'
              }
          }
      });

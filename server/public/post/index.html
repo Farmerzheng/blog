@@ -14,20 +14,25 @@
 <body>
 
     <nav>
-        <a href="/">主页</a>
         <a href="/login">登录</a>
-        <a href="/register">注册</a>
         <a href="/" id='logout'>登出</a>
     </nav>
     <hr>
     <div>
-        <button class="btn btn-default" id='publish'>发表文章</button>
-    </div>
-    <div id='article'>
-
+        <div class="title form-group">
+            <label for="title">标题</label>
+            <input type="text" class="form-control" id='title'>
+        </div>
+        <div class="article form-group">
+            <label for="article">正文</label>
+            <textarea name="" id="article" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+        <div>
+            <input type="button" value="发表" class="btn btn-default" id='post'>
+        </div>
     </div>
 </body>
-<script src='javascripts/jQuery.js'></script>
-<script src='javascripts/main.js'></script>
+<script src='../javascripts/jQuery.js'></script>
+<script src='../javascripts/post.js'></script>
 
 </html>
