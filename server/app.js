@@ -105,6 +105,7 @@ var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var publishRouter = require('./routes/publish');
 var registerRouter = require('./routes/register');
+var uploadRouter = require('./routes/upload');
 var app = express();
 
 
@@ -179,7 +180,7 @@ app.use('/', indexRouter);
 app.use('/publish', publishRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
-
+app.use('/upload', uploadRouter);
 
 // 用户登录了就没有访问注册页面的权利
 app.use('/register', registerRouter);

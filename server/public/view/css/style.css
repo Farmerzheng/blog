@@ -1,0 +1,38 @@
+.nav-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-list .nav-type {
+    flex: auto;
+    border: 1px solid red;
+    text-align: center
+}
+
+.picture-list {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap
+}
+
+.picture-item {
+    width: 7.5rem;
+    margin-left: 0.1rem;
+    margin-right: 0.1rem;
+    flex: none;
+}
+
+.picture-item a {
+    display: block;
+    width: 100%;
+}
+
+.picture-item img {
+    width: 100%;
+}
+
+.picture-item span {
+    display: block;
+    width: 100%
+}

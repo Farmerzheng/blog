@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/upload.css">
+</head>
+
+<body>
+    <div class="back" onclick="javascript:history.back(-1)"></div>
+
+
+    <!-- 
+            multiple 属性规定输入字段可选择多个值。
+            如果使用该属性，则字段可接受多个值。       
+            multiple 属性是 HTML5 中的新属性。 
+
+            accept 属性限制了上传文件的类型，打开的资源管理器对话框中只显示图片类型的文件
+        -->
+    <form action="" class="form-inline img-type">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">图片标题</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="img_title" placeholder="请输入图片标题">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-2">图片类型</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="img-type" id="img_select">
+                    <option value="0">请选择类型</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-2">Vip</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="img-type" id="img_vip">
+                    <option value="0">请选择类型</option>
+                    <option value="1">是</option>
+                    <option value="2">否</option>
+                </select>
+            </div>
+        </div>
+    </form>
+
+    <div class="upload-div" id="uploadImageDiv">
+        <ul class="upload-ul" id="uploadUL">
+            <!--默认的点击窗口
+                    在添加了图片之后，循环在这个前面insert图片的li
+                -->
+            <li class="upload-li" id="uploadBtn">
+                <form class="img-input-form" enctype="multipart/form-data" style="opacity: 0;">
+                    <input type="file" multiple='multiple' onchange="selectImage(this)" accept="image/gif, image/jpeg, image/png,image/jpg">
+                </form>
+                <div class="item">
+                    <span class="photo-span"></span>
+                    <span class="circle-span"></span>
+                    <span class="circle-solid-span"></span>
+                </div>
+            </li>
+        </ul>
+        <button class="btn btn-info btn-block" style='width: 80%;
+    margin: 16px auto;' id='upload'>上传</button>
+    </div>
+
+
+</body>
+<!-- <script src=''></script> -->
+<script src='../js/jQuery.js'></script>
+<script src='../js/config.js'></script>
+<script src='../js/rem.js'></script>
+<script>
+    //绑定下拉框change事件，当下来框改变时调用 SelectChange()方法
+    $("#select").change(function() {
+        console.log($('#select').val())
+    });
+
+
+    /* HTML5定义了FileReader作为文件API的重要成员用于读取文件，根据W3C的定义，FileReader接口提供了读取文件的方法和包含读取结果的事件模型。
+     */
+    // 检测浏览器对FileReader的支持
+    if (window.FileReader) {
+        var fr = new FileReader();
+    } else {
+        console.log('您的电脑不支持FileReader')
+    }
+
+    // 定义图片数组，用来存放上传的图片
+    var imgArr = [];
+
+    // 将选中图片展示在浏览器上
+    function selectImage(imgFile) {
+        // 获取到图片文件
+        var file = imgFile.files[0];
+        // 将图片文件添加到存储文件的数组
+        imgArr.push(file);
+
+        var reader = new FileReader();
+        //用文件加载器加载文件
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            // 图片加载完成，将图片展示在浏览器上
+            var li = $('<li></li>');
+            li.addClass('upload-li');
+            li.html('<div class="item image">' +
+                '<img class="upload-image" src="' + e.target.result + '" />' +
+                '<img class="delete-image" src="../images/delete.png" />' +
+                '</div>');
+            $('#uploadUL').prepend(li)
+        }
+    }
+
+    // 点击按钮上传图片
+    $('#upload').on('click', uploadHandler);
+
+    function uploadHandler() {
+
+        var formData = new FormData();
+
+        for (var i = 0; i < imgArr.length; i++) {
+            // 将图片添加到formData中
+            formData.append(i, imgArr[i]);
+        }
+
+        // 将图片类型存入formData
+        formData.append('img_type', $('#img_select').val());
+        formData.append('img_title', $('#img_title').val());
+        formData.append('img_vip', $('#img_vip').val())
+
+        // console.log(imgArr, imgArr.length, formData)
+
+        $.ajax({
+            url: config.url + '/upload',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            cache: false, //cache设置为false，上传文件不需要缓存
+            contentType: false, //设置为false。因为是由<form>表单构造的FormData对象，且已经声明了属性enctype="multipart/form-data"，所以这里设置为false。
+            processData: false, // 设置为false。因为data值是FormData对象，不需要对数据做处理         
+            success: function(data) {
+                console.log(data)
+                alert(data.message)
+            },
+            error: function(err) {
+                console.log(err)
+                alert(data.message)
+            }
+        });
+
+    }
+</script>
+
+</html>
