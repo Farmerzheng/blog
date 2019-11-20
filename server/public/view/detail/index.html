@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    #img-list img {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+</style>
+
+<body>
+    <div id="img-list"></div>
+</body>
+<script src='../js/jQuery.js'></script>
+<script src='../js/config.js'></script>
+<script>
+    // document.write(location.search.substr(1));
+
+    let id = location.search.substr(1);
+
+    //获取图片详情页
+    $.ajax({
+        method: "GET",
+        data: {
+            id: id
+        },
+        url: config.url + "/pictureDetail",
+        success: function(response) {
+            let data = response.result[0];
+            let imgDetail = {
+                list: data.list,
+                title: data.title
+            }
+            let imgTitle = $('<h3>' + imgDetail.title + '</h3>');
+            $('#img-list').append(imgTitle)
+
+            for (let i = 0; i < imgDetail.list.length; i++) {
+
+                // 第一张图片为首页显示的精修图，不显示在详情页
+                if (i == 0) continue;
+                // 显示图片列表
+                let img = $('<img src=../' + imgDetail.list[i] + '>');
+                $('#img-list').append(img);
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+</script>
+
+</html>

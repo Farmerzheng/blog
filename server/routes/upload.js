@@ -12,7 +12,7 @@ router.post("/", function(req, res, next) {
     // console.log(req, res, next)
     var form = new formidable.IncomingForm();
     form.uploadDir = "./tmp"; //文件保存在系统临时目录
-    form.maxFieldsSize = 10 * 1024 * 1024; //上传文件大小限制为最大10M
+    form.maxFieldsSize = 100 * 1024 * 1024; //上传文件大小限制为最大10M
     form.keepExtensions = true; //使用文件的原扩展名
 
     var targetDir = path.join(__dirname, "../public/view/images");
@@ -49,6 +49,18 @@ router.post("/", function(req, res, next) {
                     break;
                 case "4":
                     targetDir = path.join(__dirname, "../public/view/images/4");
+                    break;
+                case "5":
+                    targetDir = path.join(__dirname, "../public/view/images/5");
+                    break;
+                case "6":
+                    targetDir = path.join(__dirname, "../public/view/images/6");
+                    break;
+                case "7":
+                    targetDir = path.join(__dirname, "../public/view/images/7");
+                    break;
+                case "8":
+                    targetDir = path.join(__dirname, "../public/view/images/8");
             }
 
             if (err) throw err;

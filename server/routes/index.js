@@ -48,7 +48,7 @@ router.get("/readArticle", function(req, res, next) {
 
 });
 */
-// 读取图片信息
+// 读取首页图片信息
 router.get("/pictureList", function(req, res, next) {
 
     // 用户没有登录
@@ -84,4 +84,80 @@ router.get("/pictureList", function(req, res, next) {
     })
 
 });
+
+// 读取图片详情页信息
+router.get("/pictureDetail", function(req, res, next) {
+
+
+    // 用户已经登录
+    Picture.find({
+        _id: req.query.id
+    }).then(picture => {
+        if (!picture) {
+            res.json({
+                status: '101',
+                message: '读取错误'
+            })
+        };
+
+        res.json({
+            status: '200',
+            message: '读取成功',
+            result: picture
+        })
+    })
+
+});
+
+// 读取图片分类信息
+router.get("/pictureType", function(req, res, next) {
+
+    let type = '';
+    switch (req.query.type) {
+        case "baotunqun":
+            type = "1";
+            break;
+        case "chaoduanku":
+            type = "2";
+            break;
+        case "niuzaiku":
+            type = "3";
+            break;
+        case "mote":
+            type = "4";
+            break;
+        case "meixiong":
+            type = "5";
+            break;
+        case "meitui":
+            type = "6";
+            break;
+        case "zipai":
+            type = "7";
+            break;
+        case "ChinaJoy":
+            type = "8";
+    }
+
+
+    // 用户已经登录
+    Picture.find({
+        type: type
+    }).then(picture => {
+        if (!picture) {
+            res.json({
+                status: '101',
+                message: '读取错误'
+            })
+        };
+
+        res.json({
+            status: '200',
+            message: '读取成功',
+            result: picture
+        })
+    })
+
+});
+
 module.exports = router;
