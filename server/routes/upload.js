@@ -87,10 +87,30 @@ router.post("/", function(req, res, next) {
 
             var img_vip = fields.img_vip == '1' ? true : false;
 
+            //获取当前时间
+            function getNowFormatDate() {
+                var date = new Date();
+                var seperator1 = "-";
+                var seperator2 = ":";
+                var month = date.getMonth() + 1;
+                var strDate = date.getDate();
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+                return currentdate;
+            }
+
+            // console.log(getNowFormatDate())
+
             let pictureSchema = new Picture({
                 title: fields.img_title,
                 vip: img_vip,
                 type: fields.img_type,
+                time: getNowFormatDate(),
                 list: filesUrl
             });
 

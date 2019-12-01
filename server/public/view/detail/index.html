@@ -5,23 +5,377 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src='../js/rem.js'></script>
+    <link rel="stylesheet" href="../iconfont/iconfont.css">
     <title>Document</title>
 </head>
 <style>
+    body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #333;
+        background-color: #fff;
+        margin: 0
+    }
+    
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    a {
+        text-decoration: none
+    }
+    
+    #img-list {
+        margin-top: 60px;
+        text-align: center;
+        color: #333
+    }
+    
     #img-list img {
         display: block;
         width: 100%;
-        margin: 10px 0;
-        border-radius: 5px;
+        margin: 5px 0;
+        /* border-radius: 5px; */
+    }
+    
+    #img-list h3 {
+        margin: 0;
+        color: #333;
+        font-weight: normal;
+        padding: 10px 0;
+        font-size: .8rem;
+    }
+    
+    .nav {
+        /*位置、大小、背景、字体*/
+        display: flex;
+        height: 60px;
+        align-items: center;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px #eee;
+        z-index: 1000;
+    }
+    
+    .nav-mobile {
+        display: none;
+        position: absolute;
+        right: -200px;
+        /*transform: translateX(-200px);*/
+        top: 0;
+        width: 200px;
+        line-height: 40px;
+        height: 100vh;
+        background: #1f2120;
+        text-align: center;
+        transition: all 1s;
+    }
+    
+    .nav-btn {
+        position: absolute;
+        top: 8px;
+        left: -54px;
+        width: 52px;
+        height: 45px;
+        /* background-color: #fff; */
+        border-radius: 4px;
+        /* border: 1px solid #eee; */
+        z-index: 30;
+    }
+    
+    .bar {
+        display: block;
+        width: 30px;
+        height: 2px;
+        position: absolute;
+        left: 50%;
+        margin-left: -15px;
+        background-color: #b41783;
+        transition: all 1s;
+    }
+    
+    .bar-01 {
+        top: 10px;
+    }
+    
+    .bar-02 {
+        top: 20px;
+        opacity: 1;
+    }
+    
+    .bar-03 {
+        top: 30px;
+    }
+    
+    .nav-mobile a {
+        color: #333;
+        display: block;
+        font-size: 16px;
+        line-height: 2rem;
+    }
+    
+    .nav-cover {
+        /*display: none;*/
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 100vw;
+        height: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        transition: all 1s;
+    }
+    
+    .nav-mobile-menu {
+        background: #fff;
+        position: relative;
+        z-index: 20;
+        height: 100%;
+    }
+    
+    .unfold .nav-mobile {
+        right: 0;
+    }
+    
+    .unfold .nav-cover {
+        height: 100vh;
+    }
+    
+    .unfold .bar-02 {
+        opacity: 0;
+    }
+    
+    .unfold .bar-01 {
+        transform: rotate(-45deg);
+        top: 21px;
+        background-color: #fff
+    }
+    
+    .unfold .bar-03 {
+        transform: rotate(45deg);
+        top: 21px;
+        background-color: #fff
+    }
+    
+    .hover {
+        overflow: visible;
+    }
+    
+    .hover .nav-item-content {
+        /*height: auto;*/
+        opacity: 1;
+    }
+    
+    .nav-item-content {
+        transition: all .5s;
+        /* display: none; */
+        opacity: 0;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px #eee;
+        position: absolute;
+        left: -50px;
+        top: 60px;
+        width: 183px;
+    }
+    
+    .nav-item-content p {
+        line-height: 40px;
+        border-bottom: 1px solid #eee;
+        line-height: 40px;
+        border-bottom: 1px solid #eee;
+        /*padding: 0 40px;*/
+        white-space: nowrap;
+        cursor: pointer;
+        color: #666;
+    }
+    
+    .nav-item-content span {
+        margin: 0 20px;
+    }
+    
+    .nav-item-des {
+        transition: all 1s;
+    }
+    
+    .nav-item-content p:hover {
+        background-color: #eee;
+    }
+    
+    .nav-item-content p {
+        position: relative;
+    }
+    
+    .nav .arrow {
+        position: absolute;
+        right: 0;
+        opacity: 0;
+        transition: all 1s;
+    }
+    
+    .nav-item-content p:hover .nav-item-des {
+        margin-left: 30px;
+    }
+    
+    .nav-item-content p:hover .arrow {
+        opacity: 1
+    }
+    
+    @media (max-width: 1068px) {
+        .nav-mobile {
+            display: block;
+        }
+        .nav-list {
+            display: none
+        }
+    }
+    
+    @media (max-width: 767px) {
+        /* .banner-img {
+    height: 220px;
+    }
+    .owner-img {
+    width: 95px;
+    height: 95px;
+    } */
+    }
+    
+    @media (max-width: 479px) {
+        /* .banner-img {
+    height: 130px;
+    }
+    .owner-img {
+    width: 100%;
+    height: 200px;
+    }
+    .owner-img,
+    .owner-des {
+    display: block;
+    }
+    .owner-img img {
+    display: inline-block !important;
+    width: 200px !important;
+    } */
+    }
+    
+    .nav-user {
+        border-bottom: 1px solid #eee
+    }
+    
+    .nav-user .home {
+        padding: 2rem .2rem .2rem .2rem;
+    }
+    
+    .nav-user .home img {
+        width: 5rem;
+    }
+    
+    .nav-user .tel {
+        font-size: 16px;
+        color: #b41783;
+    }
+    
+    .nav-user p {
+        margin: 0
+    }
+    
+    .back {
+        -webkit-align-items: center;
+        align-items: center;
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        line-height: 44px;
+        position: relative;
+    }
+    
+    .back a {
+        color: #b41783;
+        text-decoration: none;
+        font-size: 1.6rem;
+        padding-left: 10px;
+        border: none;
     }
 </style>
 
 <body>
-    <div id="img-list"></div>
+    <div class="nav">
+        <div class="back">
+            <a href="javascript:history.back(-1)" class="iconfont icon-fanhui"></a>
+        </div>
+        <div class="nav-mobile">
+            <div class="nav-btn">
+                <span class="bar bar-01"></span>
+                <span class="bar bar-02"></span>
+                <span class="bar bar-03"></span>
+            </div>
+            <div class="nav-mobile-menu">
+                <div class="nav-user">
+                    <p class="home">
+                        <img src="../images/common/gohome.png" alt="">
+                    </p>
+                    <p class="tel">18515471826</p>
+                </div>
+                <ul class="nav-list-wrap">
+                    <li class="nav-mobile-item">
+                        <a href="../index.html" class="nav-mobile-item-link">首页</a>
+                    </li>
+                    <li class="nav-mobile-item">
+                        <a href="" class="nav-mobile-item-link">我的收藏</a>
+                    </li>
+                    <li class="nav-mobile-item">
+                        <a href="" class="nav-mobile-item-link">
+                            成为 VIP
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-cover"></div>
+        </div>
+    </div>
+    <div id="img-list">
+    </div>
 </body>
 <script src='../js/jQuery.js'></script>
 <script src='../js/config.js'></script>
 <script>
+    // 导航动画
+    var navBtn = $(".nav-btn");
+    var navInner = $(".nav");
+    var navItemArr = $(".nav-item");
+
+    navBtn.on("click", navBtnClickHandler);
+
+    function navBtnClickHandler() {
+        console.log(1)
+        if (navInner.hasClass("unfold")) {
+            console.log(2)
+            navInner.removeClass("unfold");
+        } else {
+            console.log(3)
+            navInner.addClass("unfold");
+        }
+
+    }
     // document.write(location.search.substr(1));
 
     let id = location.search.substr(1);

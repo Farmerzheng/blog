@@ -7,6 +7,7 @@ let pictureSchema = new Schema({
     'title': String,
     'vip': Boolean,
     'type': String,
+    'time': String,
     'list': Array //图片的路径数组
 })
 

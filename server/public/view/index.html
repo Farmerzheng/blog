@@ -5,74 +5,456 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>首页</title>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>街拍艺术馆</title>
 </head>
-
-<body>
-
-    <div>
-        <a href="/view">主页</a>
-        <a href="/view/login">登录</a>
-        <a href="/view/register">注册</a>
-        <a href="/" id='logout'>登出</a>
-    </div>
-    <hr>
-
-    <nav>
-        <div class="nav-mask">
-            <div class="nav-wrap">
-                <a class="nav-item active" href=''>
-                    最新
-                </a>
-                <a class="nav-item" href='#baotunqun'>
-                    包臀裙
-                </a>
-                <a class="nav-item" href='#chaoduanku'>
-                    超短裤
-                </a>
-                <a class="nav-item" href='#niuzaiku'>
-                    牛仔裤
-                </a>
-                <a class="nav-item" href='#mote'>
-                    展会模特
-                </a>
-                <a class="nav-item" href='#meixiong'>
-                    美胸
-                </a>
-                <a class="nav-item" href='#meitui'>
-                    美腿高跟
-                </a>
-                <a class="nav-item" href='#zipai'>
-                    自拍
-                </a>
-                <a class="nav-item last" href='#ChinaJoy'>
-                    ChinaJoy
-                </a>
-            </div>
-        </div>
-
-    </nav>
-    <div id='article'>
-
-    </div>
-    <div>
-        <ul class="picture-list">
-
-            <!-- <li class="picture-item">
-                <a href="">
-                    <img src="" alt="">
-                    <span></span>
-                </a>
-            </li> -->
-        </ul>
-    </div>
-</body>
 <script src='js/jQuery.js'></script>
 <script src='js/rem.js'></script>
 <script src='js/config.js'></script>
-<script src='js/main.js'></script>
+<style>
+    body {
+        padding: 0;
+        margin: 0
+    }
+    
+    a {
+        text-decoration: none;
+        color: #666
+    }
+    
+    nav {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+    
+    nav .index {
+        padding: 8px 14px;
+    }
+    
+    nav .index img {
+        height: 1.2rem;
+        width: 1.2rem
+    }
+    
+    .banner {
+        padding: 40px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .banner .inner {
+        margin: 0 auto;
+    }
+    
+    .banner .inner .top {
+        text-align: center;
+        margin-top: 2rem;
+        margin-bottom: 1rem
+    }
+    
+    .banner .inner .top img {
+        width: 7rem;
+        height: 7rem;
+    }
+    
+    .banner .bottom {
+        letter-spacing: 5px;
+        color: #666
+    }
+    
+    .banner .bottom h1,
+    .banner .bottom h2 {
+        font-size: 24px;
+        margin: 4px auto;
+    }
+    
+    .banner .bottom p {
+        font-weight: normal;
+        font-size: 18px;
+        letter-spacing: 8px;
+        margin: 10px 0;
+    }
+    
+    .banner .bottom a {
+        margin: 1em 0;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        min-width: 6em;
+        text-align: center;
+        padding: 0.45em 2em;
+        border-radius: 2em;
+        display: inline-block;
+        transition: all 0.15s ease;
+        box-sizing: border-box;
+        background-color: #f6f6f6;
+        font-size: 14px
+    }
+    
+    .banner .bottom .active {
+        color: #b41783;
+        border: 1px solid #b41783;
+        background-color: #fff
+    }
+    
+    .show {
+        display: block
+    }
+    
+    .hidden {
+        display: none
+    }
+    /* nav */
+    
+    .nav {
+        /*位置、大小、背景、字体*/
+        display: flex;
+        height: 60px;
+        align-items: center;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px #eee;
+        z-index: 1000;
+    }
+    
+    .nav-mobile {
+        display: none;
+        position: absolute;
+        right: -200px;
+        /*transform: translateX(-200px);*/
+        top: 0;
+        width: 200px;
+        line-height: 40px;
+        height: 100vh;
+        background: #1f2120;
+        text-align: center;
+        transition: all 1s;
+    }
+    
+    .nav-btn {
+        position: absolute;
+        top: 8px;
+        left: -54px;
+        width: 52px;
+        height: 45px;
+        /* background-color: #fff; */
+        border-radius: 4px;
+        /* border: 1px solid #eee; */
+        z-index: 30;
+    }
+    
+    .bar {
+        display: block;
+        width: 30px;
+        height: 2px;
+        position: absolute;
+        left: 50%;
+        margin-left: -15px;
+        background-color: #b41783;
+        transition: all 1s;
+    }
+    
+    .bar-01 {
+        top: 10px;
+    }
+    
+    .bar-02 {
+        top: 20px;
+        opacity: 1;
+    }
+    
+    .bar-03 {
+        top: 30px;
+    }
+    
+    .nav-mobile a {
+        color: #333;
+        display: block;
+        font-size: 16px;
+        line-height: 2rem;
+    }
+    
+    .nav-cover {
+        /*display: none;*/
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 100vw;
+        height: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        transition: all 1s;
+    }
+    
+    .nav-mobile-menu {
+        background: #fff;
+        position: relative;
+        z-index: 20;
+        height: 100%;
+    }
+    
+    .unfold .nav-mobile {
+        right: 0;
+    }
+    
+    .unfold .nav-cover {
+        height: 100vh;
+    }
+    
+    .unfold .bar-02 {
+        opacity: 0;
+    }
+    
+    .unfold .bar-01 {
+        transform: rotate(-45deg);
+        top: 21px;
+        background-color: #fff
+    }
+    
+    .unfold .bar-03 {
+        transform: rotate(45deg);
+        top: 21px;
+        background-color: #fff
+    }
+    
+    .hover {
+        overflow: visible;
+    }
+    
+    .hover .nav-item-content {
+        /*height: auto;*/
+        opacity: 1;
+    }
+    
+    .nav-item-content {
+        transition: all .5s;
+        /* display: none; */
+        opacity: 0;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px #eee;
+        position: absolute;
+        left: -50px;
+        top: 60px;
+        width: 183px;
+    }
+    
+    .nav-item-content p {
+        line-height: 40px;
+        border-bottom: 1px solid #eee;
+        line-height: 40px;
+        border-bottom: 1px solid #eee;
+        /*padding: 0 40px;*/
+        white-space: nowrap;
+        cursor: pointer;
+        color: #666;
+    }
+    
+    .nav-item-content span {
+        margin: 0 20px;
+    }
+    
+    .nav-item-des {
+        transition: all 1s;
+    }
+    
+    .nav-item-content p:hover {
+        background-color: #eee;
+    }
+    
+    .nav-item-content p {
+        position: relative;
+    }
+    
+    .nav .arrow {
+        position: absolute;
+        right: 0;
+        opacity: 0;
+        transition: all 1s;
+    }
+    
+    .nav-item-content p:hover .nav-item-des {
+        margin-left: 30px;
+    }
+    
+    .nav-item-content p:hover .arrow {
+        opacity: 1
+    }
+    
+    @media (max-width: 1068px) {
+        .nav-mobile {
+            display: block;
+        }
+        .nav-list {
+            display: none
+        }
+    }
+    
+    @media (max-width: 767px) {
+        /* .banner-img {
+       height: 220px;
+       }
+       .owner-img {
+       width: 95px;
+       height: 95px;
+       } */
+    }
+    
+    @media (max-width: 479px) {
+        /* .banner-img {
+       height: 130px;
+       }
+       .owner-img {
+       width: 100%;
+       height: 200px;
+       }
+       .owner-img,
+       .owner-des {
+       display: block;
+       }
+       .owner-img img {
+       display: inline-block !important;
+       width: 200px !important;
+       } */
+    }
+    
+    .nav-user {
+        border-bottom: 1px solid #eee
+    }
+    
+    .nav-user .home {
+        padding: 2rem .2rem .2rem .2rem;
+    }
+    
+    .nav-user .home img {
+        width: 5rem;
+    }
+    
+    .nav-user .tel {
+        font-size: 16px;
+        color: #b41783;
+    }
+    
+    body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #333;
+        background-color: #fff;
+        margin: 0
+    }
+    
+    ul,
+    li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    a {
+        text-decoration: none
+    }
+    
+    .nav-user p {
+        margin: 0
+    }
+</style>
+
+<body>
+    <nav class="nav">
+        <div class="index">
+            <a href="/view">
+                <img src="images/common/index.png" alt="">
+            </a>
+        </div>
+        <div class="nav-mobile">
+            <div class="nav-btn">
+                <span class="bar bar-01"></span>
+                <span class="bar bar-02"></span>
+                <span class="bar bar-03"></span>
+            </div>
+            <div class="nav-mobile-menu">
+                <div class="nav-user">
+                    <p class="home">
+                        <img src="images/common/gohome.png" alt="">
+                    </p>
+                    <p class="tel">18515471826</p>
+                </div>
+                <ul class="nav-list-wrap">
+                    <li class="nav-mobile-item">
+                        <a href="index.html" class="nav-mobile-item-link">首页</a>
+                    </li>
+                    <li class="nav-mobile-item">
+                        <a href="" class="nav-mobile-item-link">我的收藏</a>
+                    </li>
+                    <li class="nav-mobile-item">
+                        <a href="" class="nav-mobile-item-link">
+                            成为 VIP
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-cover"></div>
+        </div>
+    </nav>
+    <div class="banner">
+        <div class="inner">
+            <div class="top">
+                <img src="images/common/timg.png" alt="">
+            </div>
+            <div class="bottom">
+                <img src="images/common/logo-font.png" style='height:30px;margin:10px 0' alt="">
+                <p>时尚源于生活</p>
+                <p>
+                    <a href="new/" class="active">最新</a>
+                    <a href="login/" id="login" class='show'>登录 </a>
+                    <!-- <a id="login" class='hidden'>我的</a> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 导航动画
+    var navBtn = $(".nav-btn");
+    var navInner = $(".nav");
+    var navItemArr = $(".nav-item");
+
+    navBtn.on("click", navBtnClickHandler);
+
+    function navBtnClickHandler() {
+        console.log(1)
+        if (navInner.hasClass("unfold")) {
+            console.log(2)
+            navInner.removeClass("unfold");
+        } else {
+            console.log(3)
+            navInner.addClass("unfold");
+        }
+
+    }
+
+    // 判断用户是否登录
+    function isLogin() {
+        $.ajax({
+            method: "POST",
+            url: config.url + "/login/islogin",
+            data: {
+                tel: $('#tel').val(),
+                code: $('#code').val()
+            },
+            success: function(response) {
+
+            }
+        });
+    }
+    isLogin();
+</script>
 
 </html>

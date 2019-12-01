@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+<style>
+    .nav {}
+    
+    .nav .index {
+        padding: 0 10px;
+    }
+    
+    .nav .index .font {
+        height: 24px
+    }
+    
+    .nav .index img {
+        height: 40px;
+        margin: 0 6px;
+    }
+    /* nav */
+    
+    .nav {
+        /*位置、大小、背景、字体*/
+        display: flex;
+        height: 60px;
+        align-items: center;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px #eee;
+        z-index: 1000;
+    }
+    
+    .nav-mobile {
+        display: none;
+        position: absolute;
+        right: -200px;
+        /*transform: translateX(-200px);*/
+        top: 0;
+        width: 200px;
+        line-height: 40px;
+        height: 100vh;
+        background: #1f2120;
+        text-align: center;
+        transition: all 1s;
+    }
+    
+    .nav-btn {
+        position: absolute;
+        top: 8px;
+        left: -54px;
+        width: 52px;
+        height: 45px;
+        /* background-color: #fff; */
+        border-radius: 4px;
+        /* border: 1px solid #eee; */
+        z-index: 30;
+    }
+    
+    .bar {
+        display: block;
+        width: 30px;
+        height: 2px;
+        position: absolute;
+        left: 50%;
+        margin-left: -15px;
+        background-color: #b41783;
+        transition: all 1s;
+    }
+    
+    .bar-01 {
+        top: 10px;
+    }
+    
+    .bar-02 {
+        top: 20px;
+        opacity: 1;
+    }
+    
+    .bar-03 {
+        top: 30px;
+    }
+    
+    .nav-mobile a {
+        color: #333;
+        display: block;
+        font-size: 16px;
+        line-height: 2rem;
+    }
+    
+    .nav-cover {
+        /*display: none;*/
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: 100vw;
+        height: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10;
+        transition: all 1s;
+    }
+    
+    .nav-mobile-menu {
+        background: #fff;
+        position: relative;
+        z-index: 20;
+        height: 100%;
+    }
+    
+    .unfold .nav-mobile {
+        right: 0;
+    }
+    
+    .unfold .nav-cover {
+        height: 100vh;
+    }
+    
+    .unfold .bar-02 {
+        opacity: 0;
+    }
+    
+    .unfold .bar-01 {
+        transform: rotate(-45deg);
+        top: 21px;
+        background-color: #fff
+    }
+    
+    .unfold .bar-03 {
+        transform: rotate(45deg);
+        top: 21px;
+        background-color: #fff
+    }
+    
+    .hover {
+        overflow: visible;
+    }
+    
+    .hover .nav-item-content {
+        /*height: auto;*/
+        opacity: 1;
+    }
+    
+    .nav-item-content {
+        transition: all .5s;
+        /* display: none; */
+        opacity: 0;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px #eee;
+        position: absolute;
+        left: -50px;
+        top: 60px;
+        width: 183px;
+    }
+    
+    .nav-item-content p {
+        line-height: 40px;
+        border-bottom: 1px solid #eee;
+        line-height: 40px;
+        border-bottom: 1px solid #eee;
+        /*padding: 0 40px;*/
+        white-space: nowrap;
+        cursor: pointer;
+        color: #666;
+    }
+    
+    .nav-item-content span {
+        margin: 0 20px;
+    }
+    
+    .nav-item-des {
+        transition: all 1s;
+    }
+    
+    .nav-item-content p:hover {
+        background-color: #eee;
+    }
+    
+    .nav-item-content p {
+        position: relative;
+    }
+    
+    .nav .arrow {
+        position: absolute;
+        right: 0;
+        opacity: 0;
+        transition: all 1s;
+    }
+    
+    .nav-item-content p:hover .nav-item-des {
+        margin-left: 30px;
+    }
+    
+    .nav-item-content p:hover .arrow {
+        opacity: 1
+    }
+    
+    @media (max-width: 1068px) {
+        .nav-mobile {
+            display: block;
+        }
+        .nav-list {
+            display: none
+        }
+    }
+    
+    @media (max-width: 767px) {
+        /* .banner-img {
+            height: 220px;
+        }
+        .owner-img {
+            width: 95px;
+            height: 95px;
+        } */
+    }
+    
+    @media (max-width: 479px) {
+        /* .banner-img {
+            height: 130px;
+        }
+        .owner-img {
+            width: 100%;
+            height: 200px;
+        }
+        .owner-img,
+        .owner-des {
+            display: block;
+        }
+        .owner-img img {
+            display: inline-block !important;
+            width: 200px !important;
+        } */
+    }
+    
+    nav {
+        margin-top: 60px;
+        position: relative;
+        width: 100%;
+        height: 44px;
+        line-height: 44px;
+        /* background-color: #eee; */
+        overflow: hidden;
+        letter-spacing: 2px;
+        border-bottom: 1px solid #eee;
+        font-size: 16px;
+    }
+    
+    nav .active::before {
+        content: '';
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+        border-top: none;
+        border-left: solid 4px transparent;
+        border-right: solid 4px transparent;
+        border-bottom: solid 3px #ca0c16;
+    }
+    
+    nav .active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        width: 100%;
+        background-color: #ca0c16;
+    }
+    /* nav::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 44px;
+        pointer-events: none;
+        background-image: -webkit-gradient(linear, right top, left top, from(rgba(234, 235, 241, 0)), to(#eaebf1));
+        background-image: -webkit-linear-gradient(right, rgba(234, 235, 241, 0) 0%, #eaebf1 100%);
+        background-image: linear-gradient(to left, rgba(234, 235, 241, 0) 0%, #eaebf1 100%);
+    }
+    
+    
+    nav::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 40px;
+        pointer-events: none;
+        background-image: -webkit-gradient(linear, right top, left top, from(#f791d8), to(rgba(234, 235, 241, 0)));
+        background-image: -webkit-linear-gradient(right, #eaebf1 0%, rgba(234, 235, 241, 0) 100%);
+        background-image: linear-gradient(-90deg, #eaebf1 0%, rgba(234, 235, 241, 0) 100%);
+    } */
+    
+    nav .nav-mask {
+        padding-left: .32rem;
+        width: 100%;
+        height: 44px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    nav .nav-mask .nav-wrap {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        height: 100%;
+        line-height: 44px;
+    }
+    
+    nav .nav-mask .nav-item {
+        position: relative;
+        display: block;
+        margin: 0 10px;
+        height: 100%;
+        color: #666;
+        ;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+    
+    nav .nav-mask .last {
+        padding-right: 30px;
+        /* margin-right: 0; */
+    }
+    
+    .nav-user {
+        border-bottom: 1px solid #eee
+    }
+    
+    .nav-user .home {
+        padding: 2rem .2rem .2rem .2rem;
+    }
+    
+    .nav-user .home img {
+        width: 5rem;
+    }
+    
+    .nav-user .tel {
+        font-size: 16px;
+        color: #b41783;
+    }
+    
+    .picture-list {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        flex-wrap: wrap
+    }
+    
+    .picture-item {
+        text-align: center;
+        flex: none;
+        border-radius: 5px;
+        width: 49%;
+        margin: 5px 0;
+    }
+    
+    .picture-item a {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        color: #b41783;
+    }
+    /* .picture-item .title {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: rgba(255, 255, 255, .5);
+        color: #b41783;
+    } */
+    
+    .picture-item .time {
+        color: #666
+    }
+    
+    .picture-item img {
+        height: 10rem;
+        width: 100%;
+        /* border-radius: 6px */
+    }
+    
+    .picture-item span {
+        display: block;
+        width: 100%
+    }
+</style>
+
+<body>
+
+    <div class="nav">
+        <a href="/view" class="index">
+            <img src="../images/common/logo-mini.png" alt="">
+            <img class="font" src="../images/common/logo-font.png" alt="">
+        </a>
+        <div class="nav-mobile">
+            <div class="nav-btn">
+                <span class="bar bar-01"></span>
+                <span class="bar bar-02"></span>
+                <span class="bar bar-03"></span>
+            </div>
+            <div class="nav-mobile-menu">
+                <div class="nav-user">
+                    <p class="home">
+                        <img src="../images/common/gohome.png" alt="">
+                    </p>
+                    <p class="tel">18515471826</p>
+                </div>
+                <ul class="nav-list-wrap">
+                    <li class="nav-mobile-item">
+                        <a href="../index.html" class="nav-mobile-item-link">首页</a>
+                    </li>
+                    <li class="nav-mobile-item">
+                        <a href="" class="nav-mobile-item-link">我的收藏</a>
+                    </li>
+                    <li class="nav-mobile-item">
+                        <a href="" class="nav-mobile-item-link">
+                            成为 VIP
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-cover"></div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-mask">
+            <div class="nav-wrap">
+                <a class="nav-item active" href=''>
+                    最新
+                </a>
+                <a class="nav-item" href='#baotunqun'>
+                    包臀裙
+                </a>
+                <a class="nav-item" href='#chaoduanku'>
+                    超短裤
+                </a>
+                <a class="nav-item" href='#niuzaiku'>
+                    牛仔裤
+                </a>
+                <a class="nav-item" href='#mote'>
+                    展会模特
+                </a>
+                <a class="nav-item" href='#meixiong'>
+                    美胸
+                </a>
+                <a class="nav-item" href='#meitui'>
+                    美腿高跟
+                </a>
+                <a class="nav-item" href='#zipai'>
+                    自拍
+                </a>
+                <a class="nav-item last" href='#ChinaJoy'>
+                    ChinaJoy
+                </a>
+            </div>
+        </div>
+
+    </nav>
+    <div id='article'>
+
+    </div>
+    <div>
+        <ul class="picture-list">
+            <!-- <li class="picture-item">
+                <a href="">
+                    <img src="" alt="">
+                    <span></span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+</body>
+<script src='../js/jQuery.js'></script>
+<script src='../js/rem.js'></script>
+<script src='../js/config.js'></script>
+<!-- <script src='../js/main.js'></script> -->
+<script>
+    // 导航动画
+    var navBtn = $(".nav-btn");
+    var navInner = $(".nav");
+    var navItemArr = $(".nav-item");
+
+    navBtn.on("click", navBtnClickHandler);
+
+    function navBtnClickHandler() {
+        console.log(1)
+        if (navInner.hasClass("unfold")) {
+            console.log(2)
+            navInner.removeClass("unfold");
+        } else {
+            console.log(3)
+            navInner.addClass("unfold");
+        }
+
+    }
+    // 获取首页图片列表信息
+
+    $.ajax({
+        method: "GET",
+        url: config.url + "/pictureList",
+        success: function(response) {
+            console.log(response);
+
+            let dataArr = response.result;
+
+            for (let i = 0; i < dataArr.length; i++) {
+                let data = dataArr[i];
+                let li = $(
+                        '<li class="picture-item"' + 'id="' + data._id + '">' +
+                        '<a>' +
+                        '<img src="' + '../' + data.list[0] + '">' +
+                        '<span class="title" >' + data.title + '</span>' +
+                        '<span class="time">' + data.time + '</span>' +
+                        '</a>' +
+                        '</li>'
+                    )
+                    //点击图片跳转到图片详情页
+                li.on('click', function() {
+                    console.log($(this).attr('id'));
+                    window.id = $(this).attr('id');
+                    window.location.href = '/view/detail/?' + $(this).attr('id')
+                })
+                $('.picture-list').append(li);
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+
+    // 点击导航链接
+    $('.nav-item').on('click', function() {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        // 获取a链接锚点 //
+        console.log(typeof(this.hash.slice(1)));
+        let type = this.hash.slice(1);
+        // 请求相应数据
+        $.ajax({
+            method: "GET",
+            url: config.url + "/pictureType",
+            data: {
+                type: type
+            },
+            success: function(response) {
+                console.log(response); // 刷新页面
+                $('.picture-list').html('');
+                let dataArr = response.result;
+                for (let i = 0; i < dataArr.length; i++) {
+                    let
+                        data = dataArr[i];
+                    let li = $('<li class="picture-item"' + 'id="' + data._id + '">' +
+                            '<a>' +
+                            '<img src="' + '../' + data.list[0] + '">' +
+                            '<span>' + data.title + '</span>' +
+                            '</a>' +
+                            '</li>'
+                        )
+                        // 点击图片跳转到图片详情页
+                    li.on('click', function() {
+                        console.log($(this).attr('id'));
+                        window.id = $(this).attr('id');
+                        window.location.href = '/view/detail/?' +
+                            $(this).attr('id')
+                    });
+                    $('.picture-list').append(li);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    })
+</script>
+
+</html>

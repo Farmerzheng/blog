@@ -92,6 +92,49 @@ session数据存储空间一般是在内存中开辟的，那么在内存中的s
 
 express - session 是expressjs的一个中间件用来创建session。 服务器端生成了一个sessionn - id， 客户端使用了cookie保存了session - id这个加密的请求信息， 而将用户请求的数据保存在服务器端
     */
+
+/*session放在服务器端。 当浏览器关闭就会清空。 session时间不宜设置过长， 否则大量占用服务器内存。 cookie适合长时间保存， 在登出时被清除。验证用户是否登录的逻辑：
+
+
+1) 用户密码登录时， 在后台的req中记住session.
+
+2) 如果用户保存登录密码， 则记住cookie， 否则把当前用户的cookie设置为空;
+
+3) 每次用户需要向后台进行请求时， 进行状态检验：
+
+session是否存在？ 若存在， 则继续进行请求操作， 并将session的有效时间重新设置一次；
+
+若不存在， 则判断cookie是否存在 ? 若存在， 使用该cookie完成自动登录， 即完成了一次1);
+
+若不存在， 则页面重定向到登录页面。
+
+上面的验证逻辑有了。 那么在什么地方进行验证呢？ 总不能在每次进行请求的地方都进行一遍这样的验证吧？ 无论是放在前端的调用， 中间的路由， 或者后台的操作上， 显然都显得太过冗沉。
+
+经过一番资料查询， 我找到了方法：
+
+对所有的后端请求进行拦截
+
+app.use(function (req, res, next) {
+    if (req.session.login_account) { // 判断用户session是否存在  
+        next();
+    } else {
+
+        var arr = req.url.split('/');
+        for (var i = 0, length = arr.length; i < length; i++) {
+            arr[i] = arr[i].split('?')[0];
+        }
+
+        // 判断请求路径是否为根、登录、注册、登出，如果是不做拦截
+        if (arr.length > 2 && arr[0] == '' && arr[1] == 'operlogin' && arr[2] == 'checklogin' || arr[2] == 'login') {
+            next();
+        } else {
+            // req.session.originalUrl = req.originalUrl ? req.originalUrl : null;  // 记录用户原始请求路径
+            res.redirect("index2.html#/operlogin");
+        }
+    }
+});
+*/
+
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var createError = require('http-errors');
@@ -174,6 +217,30 @@ app.use(express.urlencoded({
     extended: false
 }));
 
+// 对所有的后端请求进行拦截，特别注意，要放在
+app.use(function(req, res, next) {
+
+    // 判断用户session是否存在  
+    // if (req.session.user) {
+    //     next();
+    // } else {
+
+    //     var arr = req.url.split('/');
+
+    //     for (var i = 0, length = arr.length; i < length; i++) {
+    //         arr[i] = arr[i].split('?')[0];
+    //     }
+
+    //     // 判断请求路径是否为根、登录、注册、登出，如果是不做拦截
+    //     if (arr.length > 2 && arr[1] == 'view' || arr[2] == 'login' || arr[2] == 'register' || arr[1] == 'pictureList' || arr[1] == 'pictureType') {
+    //         next();
+    //     } else {
+    //         // req.session.originalUrl = req.originalUrl ? req.originalUrl : null;  // 记录用户原始请求路径
+    //         res.redirect("/view/");
+    //     }
+    // }
+    next();
+});
 
 
 app.use('/', indexRouter);
@@ -205,5 +272,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     // res.render('error');
 });
+
+
 
 module.exports = app;

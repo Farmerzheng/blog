@@ -8,33 +8,253 @@
     <title>首页</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../iconfont/iconfont.css">
 </head>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+        /* letter-spacing: 2px; */
+    }
+    
+    .wrap {
+        margin: 0 0.8rem;
+    }
+    
+    .head {
+        color: #b41783;
+        -webkit-align-items: center;
+        align-items: center;
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        line-height: 44px;
+        position: relative;
+    }
+    
+    .head a {
+        color: #666;
+        font-weight: bold;
+        font-size: 2.2rem
+    }
+    
+    .head p {
+        font-size: 2rem;
+        text-align: center
+    }
+    
+    .head .icon-1 {
+        text-align: right
+    }
+    
+    .head a,
+    .head p {
+        flex: 1;
+        margin: 0;
+        padding: 0
+    }
+    /* .form-group input.form-control {
+        height: 40px;
+        font-size: 16px;
+        background-color: #fafafa !important;
+    } */
+    
+    .form {
+        margin: 3.2rem 0.8rem 0;
+    }
+    
+    .form .form-item {
+        -webkit-align-items: center;
+        align-items: center;
+        background: #fafafa;
+        border: 1px solid #eee;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: flex;
+        height: 4rem;
+        position: relative;
+        margin: 2rem auto
+    }
+    
+    .form-item .item-wrap {
+        background: #fafafa;
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        color: #333;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        font-size: 1.6rem;
+    }
+    
+    .form-item .item-wrap input {
+        flex: 1;
+        width: 100%;
+        border: none;
+        margin: 0;
+        outline: none;
+        padding: 0;
+        text-indent: 6px;
+        background-color: #fafafa
+    }
+    
+    .form-item .token {
+        color: #b41783
+    }
+    
+    .form-item .token span {
+        padding: 0 12px;
+    }
+    
+    .submit-btn {
+        margin-top: 20px
+    }
+    
+    .submit-btn .disabled {
+        border-color: #ccc;
+        background-color: #ccc;
+    }
+    
+    .btn {
+        padding: 0;
+        display: block;
+        width: 100%;
+        height: 4rem;
+        font-size: 1.6rem;
+        line-height: 4rem;
+        letter-spacing: 2px
+    }
+    
+    .btn-pri {
+        color: #fff;
+        background-color: #b41783;
+        border-color: #b41783;
+    }
+    
+    .btn-pri:hover {
+        color: #fff;
+        background-color: #b41783;
+        border-color: #b41783;
+    }
+    
+    .btn-outline-pri {
+        color: #b41783;
+        border-color: #b41783;
+        background-color: transparent;
+    }
+    
+    .register-btn {
+        margin-top: 2rem
+    }
+    
+    .register-btn a:hover {
+        background-color: #b41783;
+        color: #fff
+    }
+</style>
 
 <body>
-    <nav>
-        <a href="/view">主页</a>
+    <div class="head wrap">
+        <!-- <a href="/view">主页</a>
         <a href="/view/login">登录</a>
         <a href="/view/register">注册</a>
-        <a href="/view" id='logout'>登出</a>
-    </nav>
-    <div>
-        <h2>登录</h2>
-        <div class="form-group">
-            <label for="name">用户名</label>
-            <input class="form-control" type="text" name='name' id="name" placeholder="请输入用户名">
-        </div>
-        <div class="form-group">
-            <label for="password">密码</label>
-            <input class="form-control" type="password" name='password' id='password' placeholder="请输入密码">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="submit" value='登录' id='submit'>
-        </div>
+        <a href="/view" id='logout'>登出</a> -->
+        <a href="/view" class="iconfont icon-fanhui"></a>
+        <p>短信登录</p>
+        <a class="iconfont icon-1" href='../index.html'></a>
+    </div>
+    <ul class="form wrap">
+        <li class="form-item">
+            <div class="item-wrap"><input id='tel' type="tel" placeholder="请输入手机号"></div>
+        </li>
+        <li class="form-item">
+            <div class="item-wrap">
+                <input id='code' type="tel" placeholder="请输入校验码">
+                <div class="token">
+                    <span id='smsbtn' class="smsbtn">获取校验码</span>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="submit-btn wrap">
+        <input id='loginBtn' type="submit" value="登录" class="btn btn-pri disabled">
+    </div>
+    <div class="register-btn wrap">
+        <a class="btn btn-outline-pri" href='../register/'>手机快速注册</a>
     </div>
 </body>
 <script src='../js/jQuery.js'></script>
 <script src='../js/config.js'></script>
-<script src='../js/login.js'></script>
+<script>
+    // 点击获取验证码
+    $('#smsbtn').on('click', function() {
+        //向服务器发送请求获取验证码
+        $.ajax({
+            method: "POST",
+            url: config.url + "/login/getCode",
+            data: {
+                tel: $('#tel').val()
+            },
+            success: function(response) {
+                // console.log(response)
+                if (response.status == 100) {
+                    alert(response.message);
+                    window.location.href = '/view/register'
+                }
+            }
+        })
+    })
 
+    $('#code').on('input propertychange chang', function() {
+        // console.log($(this).val())
+        if ($(this).val().length >= 4) {
+            $('#loginBtn').removeClass('disabled')
+        } else(
+            $('#loginBtn').addClass('disabled')
+        )
+    })
+
+    // 登录
+    $('#loginBtn').on('click', function() {
+        $.ajax({
+            method: "POST",
+            url: config.url + "/login",
+            data: {
+                tel: $('#tel').val(),
+                code: $('#code').val()
+            },
+            success: function(response) {
+
+                console.log(response)
+                    // 用户不存在
+                if (response.status == '100') {
+                    alert(response.message)
+                }
+                // 验证码错误
+                if (response.status == '101') {
+                    alert(response.message)
+                }
+                // 登录成功
+                if (response.status == '200') {
+                    alert('登录成功');
+                    // 返回主页
+                    window.location.href = '/view'
+                }
+            }
+        });
+    });
+</script>
 
 </html>
