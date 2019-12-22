@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <a id='pay'>立即支付</a>
+</body>
+<script src='../common/js/dingyuan.js'></script>
+<script src='../common/js/jQuery.js'></script>
+<script>
+    $('#pay').on('click', function() {
+
+        let search = location.search.substr(1);
+
+        let code = search.split('&')[0].split('=')[1];
+
+        console.log(search, code);
+
+        $.ajax({
+            type: "get",
+            url: Dingyuan.config.url + '/pay',
+            data: {
+                // code: code,
+                money: 1,
+                // orderCode: 132423222212
+            },
+            success: function(res) {
+                console.log(res)
+
+                if (res.mweb_url) {
+                    window.location.href = res.mweb_url;
+                } else {
+                    console.log(res)
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status);
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+            }
+        });
+
+    })
+</script>
+
+</html>

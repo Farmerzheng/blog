@@ -15,7 +15,7 @@ router.post("/", function(req, res, next) {
     form.maxFieldsSize = 100 * 1024 * 1024; //上传文件大小限制为最大10M
     form.keepExtensions = true; //使用文件的原扩展名
 
-    var targetDir = path.join(__dirname, "../public/view/images");
+    var targetDir = path.join(__dirname, "../public/images");
     // 检查目标目录，不存在则创建
     fs.access(targetDir, function(err) {
         if (err) {
@@ -39,28 +39,29 @@ router.post("/", function(req, res, next) {
             // console.log(fields, files)
             switch (fields.img_type) {
                 case "1":
-                    targetDir = path.join(__dirname, "../public/view/images/1");
+                    //根据图片类型修改目标目录 
+                    targetDir = path.join(__dirname, "../public/images/1");
                     break;
                 case "2":
-                    targetDir = path.join(__dirname, "../public/view/images/2");
+                    targetDir = path.join(__dirname, "../public/images/2");
                     break;
                 case "3":
-                    targetDir = path.join(__dirname, "../public/view/images/3");
+                    targetDir = path.join(__dirname, "../public/images/3");
                     break;
                 case "4":
-                    targetDir = path.join(__dirname, "../public/view/images/4");
+                    targetDir = path.join(__dirname, "../public/images/4");
                     break;
                 case "5":
-                    targetDir = path.join(__dirname, "../public/view/images/5");
+                    targetDir = path.join(__dirname, "../public/images/5");
                     break;
                 case "6":
-                    targetDir = path.join(__dirname, "../public/view/images/6");
+                    targetDir = path.join(__dirname, "../public/images/6");
                     break;
                 case "7":
-                    targetDir = path.join(__dirname, "../public/view/images/7");
+                    targetDir = path.join(__dirname, "../public/images/7");
                     break;
                 case "8":
-                    targetDir = path.join(__dirname, "../public/view/images/8");
+                    targetDir = path.join(__dirname, "../public/images/8");
             }
 
             if (err) throw err;
@@ -70,17 +71,23 @@ router.post("/", function(req, res, next) {
             var keys = Object.keys(files);
 
             keys.forEach(function(key) {
+                // 获得图片存储的临时路径  "tmp\upload_cef99b58c61476cc8b86406f44f88cf1.JPG"
                 var filePath = files[key].path;
+                console.log('图片临时存储路径' + filePath)
+                    // 获得图片类型
                 var fileExt = filePath.substring(filePath.lastIndexOf("."));
                 if (".jpg.jpeg.png.gif".indexOf(fileExt.toLowerCase()) === -1) {
                     errCount += 1;
                 } else {
                     //以当前时间戳对上传文件进行重命名
                     var fileName = new Date().getTime() + fileExt;
+                    // 获得图片的实际存储路径
                     var targetFile = path.join(targetDir, fileName);
-                    //移动文件
+                    console.log('图片实际上传路径：' + targetFile)
+                        //移动文件
                     fs.renameSync(filePath, targetFile);
-                    // 文件的Url（相对路径）
+
+                    // 图片的的Url（相对路径）添加到图片数组                    
                     filesUrl.push("images/" + fields.img_type + "/" + fileName);
                 }
             });
@@ -120,13 +127,13 @@ router.post("/", function(req, res, next) {
             pictureSchema.save(function(err, doc) {
                 if (err) {
                     res.json({
-                        status: "100",
-                        error: "插入失败"
+                        statusCode: "100",
+                        message: "插入失败"
                     });
                 } else {
                     // 返回前台投票成功的信息
                     res.json({
-                        status: "0",
+                        statusCode: "0",
                         message: "上传成功",
                         data: doc
                     });

@@ -1,0 +1,10 @@
+.nav-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-list .nav-type {
+    flex: auto;
+    border: 1px solid red;
+    text-align: center
+}
