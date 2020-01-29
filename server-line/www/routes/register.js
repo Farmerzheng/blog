@@ -149,8 +149,6 @@ router.post('/', function(req, res, next) {
     let tel = req.body.tel,
         code = req.body.code;
 
-
-
     // 检验手机号、验证码是否一致
     if (user.tel != tel || user.code != code) {
         res.json({
@@ -165,17 +163,32 @@ router.post('/', function(req, res, next) {
         tel: tel
     }).then((result) => {
         if (result) {
-            // 用户存在
+
+            // 用户存在,用户信息存入session
+            req.session.user = result;
             res.json({
-                statusCode: "101",
-                message: '此手机号已经注册'
+                statusCode: "200",
+                message: '登录成功'
             });
             return;
 
         } else {
             //用户不存在，新增用户
             let user = new User({
-                "tel": tel
+                tel: tel,
+                pictureList: [],
+                vip: '',
+                expirationTime: 0,
+                nickname: '',
+                gender: '',
+                province: '',
+                city: '',
+                year: '',
+                constellation: '',
+                figureurl: '',
+                qqOpenid: '',
+                browsedPictures: 0,
+                out_trade_no: ''
             });
 
             // 将user存储在users 集合中
@@ -190,7 +203,7 @@ router.post('/', function(req, res, next) {
                     req.session.user = user;
                     res.json({
                         statusCode: "200",
-                        message: '注册成功'
+                        message: '登录成功'
                     })
 
                 }

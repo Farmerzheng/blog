@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        font-size: 20px;
+        padding: 50px 100px
+    }
+    
+    body div {
+        flex-basis: 200px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        margin: 5px;
+        padding-left: 20px;
+    }
+    
+    body div p span:nth-child(2) {
+        font-weight: bold
+    }
+    
+    body div img {
+        vertical-align: middle;
+        margin-left: 10px;
+        border-radius: 50%;
+    }
+</style>
+
+<body>
+</body>
+<script src='../../common/js/jQuery.js'></script>
+<script src='../../common/js/dingyuan.js'></script>
+<script>
+    // 获取图片信息
+    Dingyuan.blogajax('GET', "/users", {
+            perPage: 50,
+            page: 1
+        },
+        function(response) {
+            let data = response.result;
+            let str = '';
+            for (let i = 0; i < data.length; i++) {
+                str += ' <div>' +
+                    '<p>' +
+                    '<span>电话:</span>' +
+                    '<span>' + data[i].tel + '</span>' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>VIP:</span>' +
+                    '<span>' + data[i].vip + '</span>' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>年龄:</span>' +
+                    '<span>' + data[i].year + '</span>' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>省份:</span>' +
+                    '<span>' + data[i].province + '</span>' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>城市:</span>' +
+                    '<span>' + data[i].city + '</span>' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>QQ昵称:</span>' +
+                    '<span>' + data[i].nickname + '</span>' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>性别:</span>' +
+                    '<span>' + data[i].gender + '</span>' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>头像:</span>' +
+                    '<img src="' + data[i].figureurl + '" alt="街拍美女">' +
+                    '</p>' +
+                    '<p>' +
+                    '<span>浏览图片数量:</span>' +
+                    '<span>' + data[i].browsedPictures + '</span>' +
+                    '</p>' +
+                    '</div>'
+            }
+            // console.log(response)
+            $('body').html(str);
+        },
+        function(error) {
+            console.log(err)
+        })
+</script>
+
+</html>

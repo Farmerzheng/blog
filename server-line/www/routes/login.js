@@ -9,7 +9,7 @@ var appid = 1400283544; // SDK AppID 以1400开头
 // 短信应用 SDK AppKey
 var appkey = "bc6f7e56046cf75b900636b2d3bd158c";
 // 短信模板 ID，需要在短信控制台中申请
-var templateId = 477456; // NOTE: 这里的模板ID`7839`只是示例，真实的模板 ID 需要在短信控制台中申请
+var templateId = 477456; //模板 ID 需要在短信控制台中申请
 // 签名
 var smsSign = "宁乡艾客访网络工作室"; // NOTE: 签名参数使用的是`签名内容`，而不是`签名ID`。这里的签名"腾讯云"只是示例，真实的签名需要在短信控制台申请
 
@@ -17,48 +17,10 @@ var userMsg = {
     tel: '',
     code: ''
 };
-/* GET login page. */
-// router.post("/", function (req, res, next) {
-// 生成密码的md5值
-// // let md5 = crypto.createHash("md5");
-// // password = md5.update(req.body.password).digest("hex");
-
-// // 检查用户是否存在
-// User.findOne({
-//     name: req.body.name
-// }).then(user => {
-//     // 如果用户不存在
-//     if (!user) {
-//         res.json({
-//             status: "100",
-//             message: "不存在此用户，请先注册"
-//         });
-//         return;
-//     }
-//     // 检查密码是否一致
-//     console.log(req.body.password, password);
-//     if (password != user.password) {
-//         res.json({
-//             status: "101",
-//             message: "密码错误"
-//         });
-//         return;
-//     }
-
-// 用户名密码都匹配后，将用户信息存入session
-// req.session.user = user;
-// res.json({
-//     status: "200",
-//     message: "登录成功"
-// });
-// });
-
-// next();
-// });
-
 
 // 判断是否登录
 router.get("/isLogin", function(req, res, next) {
+    // console.log(req.session.user._id)
 
     if (req.session.user) {
         res.json({
@@ -92,6 +54,7 @@ router.post("/getCode", function(req, res, next) {
 
         // 存在用户，发送校验码
         let tel = req.body.tel;
+
         // 需要发送短信的手机号码
         var phoneNumbers = [tel];
 
@@ -103,8 +66,8 @@ router.post("/getCode", function(req, res, next) {
             if (err) {
                 console.log("err: ", err);
             } else {
-                console.log("request data: ", res.req);
-                console.log("response data: ", resData);
+                // console.log("request data: ", res.req);
+                // console.log("response data: ", resData);
                 // 获取用户的手机号和验证码
                 userMsg.tel = tel;
                 userMsg.code = randomNum;
@@ -121,6 +84,7 @@ router.post("/getCode", function(req, res, next) {
         var randomNum = randomNum(1000, 9999);
 
         var params = [randomNum, 1];
+
         ssender.sendWithParam("86", phoneNumbers[0], templateId,
             params, smsSign, "", "", callback);
 
@@ -148,6 +112,7 @@ router.post("/", function(req, res, next) {
             return;
         }
         // 检查验证码密码是否一致
+        console.log(userMsg.code, req.body.code)
         if (userMsg.code != req.body.code) {
             res.json({
                 statusCode: "101",

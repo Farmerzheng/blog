@@ -1,0 +1,200 @@
+     .nav {
+         display: flex
+     }
+     
+     .nav .index {
+         padding: 0 10px;
+     }
+     
+     .nav .index .font {
+         height: 30px
+     }
+     
+     .nav .index img {
+         height: 50px;
+         margin: 0 6px;
+     }
+     
+     nav {
+         position: relative;
+         width: 100%;
+         /* height: 44px; */
+         line-height: 44px;
+         /* background-color: #eee; */
+         overflow: hidden;
+         letter-spacing: 2px;
+         border-bottom: 1px solid #eee;
+         font-size: 16px;
+     }
+     
+     nav .active::before {
+         content: '';
+         position: absolute;
+         bottom: 2px;
+         left: 50%;
+         -webkit-transform: translateX(-50%);
+         transform: translateX(-50%);
+         border-top: none;
+         border-left: solid 4px transparent;
+         border-right: solid 4px transparent;
+         border-bottom: solid 3px #ca0c16;
+     }
+     
+     nav .active::after {
+         content: '';
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         height: 2px;
+         width: 100%;
+         background-color: #ca0c16;
+     }
+     
+     nav .nav-mask {
+         /* padding-left: .32rem; */
+         width: 100%;
+         /* height: 44px; */
+         overflow-x: auto;
+         -webkit-overflow-scrolling: touch;
+     }
+     
+     nav .nav-mask .nav-wrap {
+         display: -webkit-box;
+         display: -ms-flexbox;
+         display: flex;
+         justify-content: center;
+         flex-wrap: wrap;
+         height: 100%;
+         line-height: 80px;
+         font-size: 16px;
+     }
+     
+     nav .nav-mask .nav-item {
+         position: relative;
+         display: block;
+         margin: 0 10px;
+         height: 100%;
+         color: #666;
+         ;
+         -ms-flex-negative: 0;
+         flex-shrink: 0;
+         white-space: nowrap;
+     }
+     
+     nav .nav-mask .last {
+         padding-right: 30px;
+         /* margin-right: 0; */
+     }
+     
+     .picture-list {
+         display: flex;
+         justify-content: space-around;
+         width: 100%;
+         flex-wrap: wrap
+     }
+     
+     .picture-item {
+         text-align: center;
+         flex: none;
+         border-radius: 5px;
+         width: 240px;
+         margin: 5px 5px;
+         height: 350px;
+         overflow: hidden;
+     }
+     
+     .picture-item a {
+         position: relative;
+         display: block;
+         width: 100%;
+         height: 100%;
+         color: #b41783;
+     }
+     
+     .picture-item .time {
+         color: #999;
+         font-size: 12px;
+     }
+     
+     .picture-item img {
+         width: 100%;
+         border-radius: 5px;
+         position: absolute;
+         left: 0;
+         top: 0;
+         right: 0;
+         bottom: 0;
+         margin: auto;
+     }
+     
+     .picture-item div {
+         position: absolute;
+         z-index: 100;
+         background-color: #fff;
+         width: 100%;
+         bottom: 0;
+     }
+     
+     .picture-item span {
+         display: block;
+         width: 100%;
+         margin-top: 10px
+     }
+     
+     .hidden {
+         display: none !important
+     }
+     
+     .show {
+         display: block !important
+     }
+     
+     .footer {
+         margin-top: 20px;
+         text-align: center;
+         display: flex;
+         flex-direction: column;
+         color: #666;
+         background-color: #eee
+     }
+     
+     .footer span {
+         padding: 5px 0
+     }
+     
+     .wrap {
+         width: 1000px;
+         margin: 60px auto 0
+     }
+     
+     @media (max-width: 1068px) {
+         .wrap {
+             width: 100%;
+             margin: 60px auto 0
+         }
+         .picture-item {
+             width: 49%;
+             height: 300px;
+             overflow: hidden;
+             margin: 5px 0;
+             position: relative;
+             border: 1px solid #eee;
+         }
+         .nav .index .font {
+             height: 20px
+         }
+         .nav .index img {
+             height: 30px;
+             margin: 0 6px;
+         }
+         nav .nav-mask .nav-wrap {
+             line-height: 44px;
+         }
+         .picture-item span {
+             margin-top: 5px
+         }
+     }
+     
+     @media (max-width: 767px) {}
+     
+     @media (max-width: 479px) {}

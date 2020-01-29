@@ -1,0 +1,129 @@
+ .title {
+        margin-top: 70px;
+        height: 40px;
+        line-height: 40px;
+        color: #b41783;
+        font-size: 18px;
+        /* border-top: 1px solid #eee; */
+        /* border-bottom: 1px solid #eee; */
+        text-align: center;
+        letter-spacing: 2px;
+    }
+    
+    .vip {}
+    
+    .vip-wrap {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap
+    }
+    
+    .vip-item {
+        flex-basis: 7rem;
+        text-align: center;
+        border: 1px solid #eee;
+        box-sizing: border-box;
+        margin-top: 10px;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .vip-item-title {
+        line-height: 30px;
+        color: #b41783;
+    }
+    
+    .vip-item .des {
+        line-height: 20px;
+        font-size: 12px;
+        color: #999;
+    }
+    
+    .vip-des {
+        /* line-height: 12px; */
+        margin-top: 2rem;
+        color: #b41783;
+        /* letter-spacing: 2px; */
+        margin-left: .7rem;
+    }
+    
+    .pay-btn {
+        width: 15rem;
+        height: 40px;
+        margin: 2rem auto;
+        display: block;
+        border: 1px solid #b41783;
+        background-color: #b41783;
+        color: #fff;
+        font-size: 16px;
+        letter-spacing: 6px;
+        border-radius: 5px;
+    }
+    
+    .vip .selected {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: #b41783;
+        right: -18px;
+        bottom: -24px;
+        color: #fff;
+        transform: rotate(141deg);
+        display: none;
+    }
+    
+    .vip .selected a {
+        position: absolute;
+        left: 13px;
+        bottom: 3px;
+        color: #fff;
+        font-size: 10px;
+        transform: rotate(-144deg);
+    }
+    
+    .active {
+        border: 1px solid #b41783
+    }
+    
+    .active .selected {
+        display: block
+    }
+    
+    .pay-show {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 12rem;
+        height: 132px;
+        line-height: 44px;
+        border-radius: 6px;
+        border: 1px solid #eee;
+        box-shadow: 0px 0px 12px #eee;
+        background-color: #fff;
+    }
+    
+    .pay-show div {
+        border-bottom: 1px solid #eee;
+        text-align: center;
+        font-size: 16px;
+    }
+    
+    .pay-show .success {
+        color: #44b549;
+    }
+    
+    .pay-show .fail {
+        color: #666;
+    }
+    
+    .show {
+        display: block !important;
+    }
+    
+    .hidden {
+        display: none !important;
+    }

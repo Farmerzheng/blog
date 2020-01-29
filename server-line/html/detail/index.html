@@ -5,462 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="街拍艺术馆致力于为广大街拍爱好者提供一个分享的平台，打造中国街拍第一站">
+    <meta name="keywords" content="街拍艺术馆，街拍美女，街拍包臀裙，街拍美腿，街拍超短裤，街拍美胸，街拍高跟">
     <script src='../common/js/rem.js'></script>
-    <!-- <link rel="stylesheet" href="../iconfont/iconfont.css"> -->
+    <link rel="stylesheet" type="" href="../common/css/detail.css">
+    <link rel="stylesheet" href="../common/css/sidebar.css">
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1539351_mchl12rjkbh.css">
-    <title>Document</title>
+    <title>街拍艺术馆</title>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?7b14ecb56006eebb5f9f2da9354d0e3a";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
-<style>
-    body {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        /* line-height: 1.42857143; */
-        color: #333;
-        background-color: #fff;
-        margin: 0
-    }
-    
-    ul,
-    li {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-    
-    a {
-        text-decoration: none
-    }
-    
-    #img-list {
-        margin-top: 60px;
-        text-align: center;
-        color: #333
-    }
-    
-    #img-list img {
-        display: block;
-        width: 100%;
-        margin: 5px 0;
-        width: 800px;
-        margin: 5px auto;
-    }
-    
-    #img-list h3 {
-        margin: 0;
-        color: #333;
-        font-weight: normal;
-        padding: 10px 0;
-        font-size: .8rem;
-    }
-    
-    .nav {
-        /*位置、大小、背景、字体*/
-        display: flex;
-        justify-content: space-between;
-        height: 60px;
-        align-items: center;
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 60px;
-        line-height: 60px;
-        background-color: #fff;
-        box-shadow: 0px 1px 3px #eee;
-        z-index: 1000;
-    }
-    
-    .nav-mobile {
-        display: none;
-        position: absolute;
-        right: -200px;
-        /*transform: translateX(-200px);*/
-        top: 0;
-        width: 200px;
-        line-height: 40px;
-        height: 100vh;
-        background: #1f2120;
-        text-align: center;
-        transition: all 1s;
-    }
-    
-    .nav-btn {
-        position: absolute;
-        top: 8px;
-        left: -54px;
-        width: 52px;
-        height: 45px;
-        /* background-color: #fff; */
-        border-radius: 4px;
-        /* border: 1px solid #eee; */
-        z-index: 30;
-    }
-    
-    .bar {
-        display: block;
-        width: 30px;
-        height: 2px;
-        position: absolute;
-        left: 50%;
-        margin-left: -15px;
-        background-color: #b41783;
-        transition: all 1s;
-    }
-    
-    .bar-01 {
-        top: 10px;
-    }
-    
-    .bar-02 {
-        top: 20px;
-        opacity: 1;
-    }
-    
-    .bar-03 {
-        top: 30px;
-    }
-    
-    .nav-mobile a {
-        color: #333;
-        display: block;
-        font-size: 16px;
-        line-height: 2rem;
-    }
-    
-    .nav-cover {
-        /*display: none;*/
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        margin: auto;
-        width: 100vw;
-        height: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 10;
-        transition: all 1s;
-    }
-    
-    .nav-mobile-menu {
-        background: #fff;
-        position: relative;
-        z-index: 20;
-        height: 100%;
-    }
-    
-    .unfold .nav-mobile {
-        right: 0;
-    }
-    
-    .unfold .nav-cover {
-        height: 100vh;
-    }
-    
-    .unfold .bar-02 {
-        opacity: 0;
-    }
-    
-    .unfold .bar-01 {
-        transform: rotate(-45deg);
-        top: 21px;
-        background-color: #fff
-    }
-    
-    .unfold .bar-03 {
-        transform: rotate(45deg);
-        top: 21px;
-        background-color: #fff
-    }
-    
-    .hover {
-        overflow: visible;
-    }
-    
-    .hover .nav-item-content {
-        /*height: auto;*/
-        opacity: 1;
-    }
-    
-    .nav-item-content {
-        transition: all .5s;
-        /* display: none; */
-        opacity: 0;
-        background-color: #fff;
-        box-shadow: 0px 1px 3px #eee;
-        position: absolute;
-        left: -50px;
-        top: 60px;
-        width: 183px;
-    }
-    
-    .nav-item-content p {
-        line-height: 40px;
-        border-bottom: 1px solid #eee;
-        line-height: 40px;
-        border-bottom: 1px solid #eee;
-        /*padding: 0 40px;*/
-        white-space: nowrap;
-        cursor: pointer;
-        color: #666;
-    }
-    
-    .nav-item-content span {
-        margin: 0 20px;
-    }
-    
-    .nav-item-des {
-        transition: all 1s;
-    }
-    
-    .nav-item-content p:hover {
-        background-color: #eee;
-    }
-    
-    .nav-item-content p {
-        position: relative;
-    }
-    
-    .nav .arrow {
-        position: absolute;
-        right: 0;
-        opacity: 0;
-        transition: all 1s;
-    }
-    
-    .nav-item-content p:hover .nav-item-des {
-        margin-left: 30px;
-    }
-    
-    .nav-item-content p:hover .arrow {
-        opacity: 1
-    }
-    
-    .nav-user {
-        border-bottom: 1px solid #eee
-    }
-    
-    .nav-user .home {
-        padding: 2rem .2rem .2rem .2rem;
-    }
-    
-    .nav-user .home img {
-        width: 5rem;
-    }
-    
-    .nav-user .tel {
-        font-size: 16px;
-        color: #b41783;
-        margin: 30px 0;
-    }
-    
-    .nav-user p {
-        margin: 0
-    }
-    
-    .back {
-        -webkit-align-items: center;
-        align-items: center;
-        background-color: #fff;
-        border-bottom: 1px solid #eee;
-        -webkit-box-align: center;
-        -moz-box-align: center;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: center;
-        line-height: 44px;
-        position: relative;
-    }
-    
-    .back a {
-        color: #b41783;
-        text-decoration: none;
-        font-size: 1.3rem;
-        padding-left: 10px;
-        border: none;
-    }
-    
-    .hidden {
-        display: none !important
-    }
-    
-    .show {
-        display: block !important
-    }
-    
-    .interaction {}
-    
-    .interaction .button {
-        text-align: center
-    }
-    
-    .interaction .button .collect {
-        display: flex;
-        justify-content: center
-    }
-    
-    .interaction .iconfont {
-        display: block;
-        font-size: 60px;
-        color: #aaa;
-    }
-    
-    .interaction .iconfont .text {
-        display: block;
-        font-size: 12px;
-        color: #aaa
-    }
-    
-    .mint-toast {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        max-width: 80%;
-        border-radius: 5px;
-        background: rgba(0, 0, 0, .7);
-        color: #fff;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        text-align: center;
-        z-index: 1000;
-        -webkit-transition: opacity .3s linear;
-        -o-transition: opacity .3s linear;
-        transition: opacity .3s linear;
-        padding: 20px 40px;
-    }
-    
-    .mint-toast.is-placemiddle {
-        left: 50%;
-        top: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-    
-    .mint-toast-icon {
-        display: block;
-        text-align: center;
-        font-size: 20px;
-    }
-    
-    .mint-toast-text {
-        font-size: 14px;
-        display: block;
-        padding-top: 10px;
-        text-align: center;
-    }
-    
-    .footer {
-        margin-top: 20px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        color: #666;
-        background-color: #eee
-    }
-    
-    .footer span {
-        padding: 5px 0
-    }
-    
-    .wrap {
-        max-width: 1000px;
-        left: 50%;
-        margin-left: -500px
-    }
-    
-    .interaction .line-content {
-        position: relative;
-        font-size: .6rem;
-        color: #b41783;
-        text-align: center;
-        margin: 10px auto;
-        width: 200px;
-    }
-    
-    .interaction .line-content::before {
-        content: '';
-        position: absolute;
-        display: block;
-        left: -104px;
-        top: 14px;
-        width: 100px;
-        height: 1px;
-        background-color: #b41783;
-    }
-    
-    .interaction .line-content::after {
-        content: '';
-        position: absolute;
-        display: block;
-        left: 200px;
-        top: 15px;
-        width: 100px;
-        height: 1px;
-        background-color: #b41783;
-    }
-    
-    .nav-list .nav-list-wrap {
-        display: flex
-    }
-    
-    .nav-list .nav-item {
-        padding: 0 20px;
-        font-size: 18px;
-    }
-    
-    @media (max-width: 1068px) {
-        .nav-mobile {
-            display: block;
-        }
-        .nav-list {
-            display: none
-        }
-        .wrap {
-            left: 0;
-            margin-left: 0
-        }
-        .interaction .line-content {
-            position: relative;
-            font-size: .6rem;
-            color: #b41783;
-            text-align: center;
-            margin: 10px auto;
-            width: 200px;
-        }
-        .interaction .line-content::before {
-            content: '';
-            position: absolute;
-            display: block;
-            left: -70px;
-            top: 9px;
-            width: 100px;
-            height: 1px;
-            background-color: #b41783;
-        }
-        .interaction .line-content::after {
-            content: '';
-            position: absolute;
-            display: block;
-            left: 168px;
-            top: 10px;
-            width: 100px;
-            height: 1px;
-            background-color: #b41783;
-        }
-        #img-list img {
-            width: 100%;
-        }
-    }
-    
-    @media (max-width: 767px) {}
-    
-    @media (max-width: 479px) {}
-</style>
 
 <body>
     <div class="nav wrap">
@@ -470,17 +31,17 @@
         <div class="nav-list">
             <ul class="nav-list-wrap">
                 <li class="nav-item">
-                    <a href="" class="nav-item-link">登录</a>
+                    <a id='pc_login' href="../denglu/" class="nav-item-link">登录</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-item-link">首页</a>
+                    <a href="../index.html" class="nav-item-link">首页</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-item-link">我的收藏</a>
+                    <a href="../shoucang/" class="nav-item-link">我的收藏</a>
                 </li>
-                <li class="nav-item">
-                    <a href="" class="nav-item-link">成为VIP</a>
-                </li>
+                <!-- <li class="nav-item">
+                    <a href="../cheap/" class="nav-item-link">成为VIP</a>
+                </li> -->
             </ul>
         </div>
         <div class="nav-mobile">
@@ -492,23 +53,26 @@
             <div class="nav-mobile-menu">
                 <div class="nav-user">
                     <p class="home">
-                        <img src="../common/images/gohome.png" alt="">
+                        <img src="../common/images/gohome.png" alt="街拍艺术馆">
                     </p>
-                    <p id='user' class="tel"></p>
-                    <a id='login_bar' href="/login">登录</a>
+                    <p id='user' class="tel">
+                        <img src="" alt="" class="figureurl">
+                        <span class="nickname"></span>
+                    </p>
+                    <a id='login_bar' href="../denglu/" class='hidden'>登录</a>
                 </div>
                 <ul class="nav-list-wrap">
                     <li class="nav-mobile-item">
                         <a href="../index.html" class="nav-mobile-item-link">首页</a>
                     </li>
                     <li class="nav-mobile-item">
-                        <a href="../collect" class="nav-mobile-item-link">我的收藏</a>
+                        <a href="../shoucang/" class="nav-mobile-item-link">我的收藏</a>
                     </li>
-                    <li class="nav-mobile-item">
-                        <a href="" class="nav-mobile-item-link">
-                            成为 VIP
-                        </a>
-                    </li>
+                    <!-- <li class="nav-mobile-item">
+                        <a href="../cheap/" class="nav-mobile-item-link">
+                                成为 VIP
+                            </a>
+                    </li> -->
                 </ul>
             </div>
             <div class="nav-cover"></div>
@@ -516,15 +80,25 @@
     </div>
     <div id="img-list">
     </div>
-    <div class="interaction">
+    <div class="interaction hidden" id='interaction'>
         <div class="line-content">
-            收藏她，你值得拥有
+            收藏起来，建立私人相册吧
         </div>
         <div class="button">
             <div class="collect">
-                <a class="iconfont iconshoucang-yuan" id='collect'><span class="text">收藏</span></a>
+                <a class="iconfont iconshoucang-yuan" id='collect'>
+                    <span class="text">收藏</span>
+                </a>
             </div>
         </div>
+    </div>
+    <div class="vip hidden" id='vip'>
+        <div class="vip-tips">达到浏览上限，1元即可成为VIP！</div>
+        <a class="vip-btn" href="../cheap/">加入VIP</a>
+    </div>
+    <div class="vip hidden" id='login'>
+        <div class="vip-tips">每日更新，登陆后可查看高清图片</div>
+        <a class="vip-btn" href="../denglu/">登录</a>
     </div>
     <div class="mint-toast is-placemiddle">
         <i class="mint-toast-icon iconfont iconchenggong"></i>
@@ -538,159 +112,7 @@
 </body>
 <script src='../common/js/jQuery.js'></script>
 <script src='../common/js/dingyuan.js'></script>
-<script>
-    // 获取图片id
-    let id = location.search.substr(1).split('=')[1];
-    console.log(id)
-
-    // 点击返回按钮
-    $('#back').on('click', function() {
-        window.history.back()
-    })
-
-    // 点击收藏
-    $('#collect').on('click', function() {
-        let that = $(this);
-
-        // 将图片信息插入数据库
-        Dingyuan.blogajax('POST', '/collect', {
-                id: id
-            }, function(response) {
-                if (response.statusCode == '200') {
-                    // 插入成功
-                    // 改变按钮颜色
-                    that.css({
-                        color: "#b41783"
-                    })
-
-                    // 弹框提示收藏成功
-                    $('.mint-toast').addClass('show');
-                    $('.mint-toast').find('span').text(response.message)
-                    setTimeout(function() {
-                        $('.mint-toast').removeClass('show')
-                    }, 1000)
-                }
-
-                if (response.statusCode == '101') {
-                    // 弹框提示收藏成功
-                    $('.mint-toast').addClass('show');
-                    $('.mint-toast').find('span').text(response.message)
-                    setTimeout(function() {
-                        $('.mint-toast').removeClass('show')
-                    }, 1000)
-                }
-            }, function() {
-
-            })
-            // $.ajax({
-            //     method: "POST",
-            //     url: Dingyuan.config.url + "/collect",
-            //     data: {
-            //         id: id
-            //     },
-            //     success: function(response) {
-            //         if (response.status == '200') {
-            //             // 插入成功
-            //             // 改变按钮颜色
-            //             that.css({
-            //                 color: "#b41783"
-            //             })
-
-        //             // 弹框提示收藏成功
-        //             $('.mint-toast').addClass('show');
-        //             $('.mint-toast').find('span').text(response.message)
-        //             setTimeout(function() {
-        //                 $('.mint-toast').removeClass('show')
-        //             }, 1000)
-        //         }
-
-        //         if (response.status == '101') {
-        //             // 弹框提示收藏成功
-        //             $('.mint-toast').addClass('show');
-        //             $('.mint-toast').find('span').text(response.message)
-        //             setTimeout(function() {
-        //                 $('.mint-toast').removeClass('show')
-        //             }, 1000)
-        //         }
-
-        //     },
-        //     error: function() {
-
-        //     }
-        // });
-    })
-
-
-    // 判断用户是否登录
-    function isLogin() {
-        $.ajax({
-            method: "GET",
-            url: Dingyuan.config.url + "/login/islogin",
-            success: function(response) {
-                console.log(response)
-                if (response.status == '200') {
-                    // 侧边导航
-                    $('#user').addClass('show');
-                    $('#user').text(response.message.tel);
-                    $('#login_bar').addClass('hidden')
-                    window.tel = response.message.tel;
-                } else {
-                    // 侧边导航
-                    $('#user').addClass('hidden')
-                    $('#login_bar').addClass('show')
-                }
-            },
-            error: function() {
-
-            }
-        });
-    }
-    isLogin();
-
-    // 导航动画
-    var navBtn = $(".nav-btn");
-    var navInner = $(".nav");
-    var navItemArr = $(".nav-item");
-
-    navBtn.on("click", navBtnClickHandler);
-
-    function navBtnClickHandler() {
-        console.log(1)
-        if (navInner.hasClass("unfold")) {
-            console.log(2)
-            navInner.removeClass("unfold");
-        } else {
-            console.log(3)
-            navInner.addClass("unfold");
-        }
-
-    }
-
-
-    //获取图片详情页
-
-    Dingyuan.blogajax('GET', '/pictureDetail', {
-        id: id
-    }, function(response) {
-        console.log(response)
-        let data = response.result[0];
-        let imgDetail = {
-            list: data.list,
-            title: data.title
-        }
-        let imgTitle = $('<h3>' + imgDetail.title + '</h3>');
-        $('#img-list').append(imgTitle)
-
-        for (let i = 0; i < imgDetail.list.length; i++) {
-            // 第一张图片为首页显示的精修图，不显示在详情页
-            if (i == 0) continue;
-            // 显示图片列表 let
-            img = $('<img src=../' + imgDetail.list[i] + '>');
-            $('#img-list').append(img);
-        }
-    }, function(err) {
-        console.log(err);
-    })
-</script>
+<script src='../common/js/login.js'></script>
+<script src='../common/js/detail.js'></script>
 
 </html>

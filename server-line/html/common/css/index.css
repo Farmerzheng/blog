@@ -1,0 +1,133 @@
+  body {
+      padding: 0;
+      margin: 0
+  }
+  
+  a {
+      text-decoration: none;
+      color: #666
+  }
+  
+  nav {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+  }
+  
+  nav .index {
+      height: 44px;
+  }
+  
+  nav .index img {
+      height: 26px;
+      width: 26px;
+      padding: 9px 12px;
+  }
+  
+  .banner {
+      padding: 40px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+  }
+  
+  .banner .inner {
+      margin: 0 auto;
+  }
+  
+  .banner .inner .top {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 40px;
+  }
+  
+  .banner .inner .top img {
+      width: 200px;
+  }
+  
+  .banner .bottom {
+      letter-spacing: 5px;
+      color: #666
+  }
+  
+  .banner .bottom h1,
+  .banner .bottom h2 {
+      font-size: 24px;
+      margin: 4px auto;
+  }
+  
+  .banner .bottom p {
+      font-weight: normal;
+      font-size: 18px;
+      letter-spacing: 8px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+  }
+  
+  .banner .bottom a {
+      margin: 20px 20px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      min-width: 6em;
+      text-align: center;
+      padding: 0.65em 3em;
+      border-radius: 2em;
+      display: inline-block;
+      transition: all 0.15s ease;
+      box-sizing: border-box;
+      background-color: #f6f6f6;
+      font-size: 18px
+  }
+  
+  .banner .bottom .active {
+      color: #b41783;
+      border: 1px solid #b41783;
+      background-color: #fff
+  }
+  
+  .show {
+      display: block !important
+  }
+  
+  .hidden {
+      display: none !important;
+  }
+  
+  .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      color: #666;
+      background-color: #eee;
+  }
+  
+  .footer span {
+      padding: 2px 0
+  }
+  
+  .wrap {
+      max-width: 1000px;
+      left: 50%;
+      margin-left: -500px
+  }
+  
+  @media (max-width: 1068px) {
+      .wrap {
+          left: 0;
+          margin-left: 0;
+      }
+      .banner .bottom a {
+          padding: 0.65em 2em;
+          font-size: 14px
+      }
+      .banner .inner .top img {
+          width: 50%;
+      }
+  }
+  
+  @media (max-width: 767px) {}
+  
+  @media (max-width: 479px) {}

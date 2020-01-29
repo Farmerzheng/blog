@@ -4,8 +4,20 @@ let Schema = mongoose.Schema;
 // schema 是用来定义 documents的基本字段和集合的
 
 let userSchema = new Schema({
-    "tel": String,
-    "pictureList": Array
+    tel: String,
+    pictureList: Array,
+    vip: String,
+    expirationTime: Number,
+    nickname: String,
+    gender: String,
+    province: String,
+    city: String,
+    year: String,
+    constellation: String,
+    figureurl: String,
+    qqOpenid: String, //qq登录用户唯一标识
+    browsedPictures: Number,
+    out_trade_no: String //订单号
 })
 
 /* 

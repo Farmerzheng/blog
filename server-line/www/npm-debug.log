@@ -7,7 +7,7 @@
 6 silly lifecycle server@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle server@0.0.0~start: server@0.0.0
 8 verbose lifecycle server@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle server@0.0.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/www/www/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/nginx/sbin
+9 verbose lifecycle server@0.0.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/www/www/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/mongodb/bin/
 10 verbose lifecycle server@0.0.0~start: CWD: /www/www
 11 silly lifecycle server@0.0.0~start: Args: [ '-c', 'node ./bin/www' ]
 12 silly lifecycle server@0.0.0~start: Returned: code: 1  signal: null

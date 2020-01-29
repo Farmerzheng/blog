@@ -2,14 +2,17 @@ var express = require('express');
 var router = express.Router();
 const request = require('request');
 const sha1 = require('sha1');
+const payConfig = require('../payConfig');
 
 /* GET home page. */
 router.post('/', function(req, res, next) {
 
+    console.log('111')
+
     let resTo = res;
-    const grant_type = 'client_credential'
-    const secret = '4c7484901171665ffdc6f37fa4bef7f7';
-    const appid = 'wx470416dc40550534';
+    const grant_type = 'client_credential';
+    const secret = payConfig.wxAppSecret;
+    const appid = payConfig.wxAppId;
 
     request('https://api.weixin.qq.com/cgi-bin/token?grant_type=' + grant_type + '&appid=' + appid + '&secret=' + secret, (err, res, body) => {
 
@@ -38,7 +41,7 @@ router.post('/', function(req, res, next) {
             // 用sha1加密
             let signature = sha1(str)
 
-            //console.log(noncestr,timestamp,jsapi_ticket,url,signature)
+            console.log(noncestr,timestamp,jsapi_ticket,url,signature)
 
             resTo.json({
                 appId: appid,

@@ -1,6 +1,8 @@
 var express = require("express");
 var Picture = require("../models/picture");
 
+var images = require("images");
+
 //2、引入multer模块
 /*multer在解析完成后，会向request对象中添加一个body对象和一个file或者files对象(上传多个文件的时候用files对象)，其中body中包含提交的字段，而file中包含上传的文件*/
 const multer = require("multer");
@@ -17,6 +19,7 @@ var storage = multer.diskStorage({
 
     //指定文件上传到服务器的路径
     destination: function(req, file, cb) {
+        console.log(path.join(__dirname, "../public/images"))
         cb(null, path.join(__dirname, "../public/images"))
     },
 
@@ -92,99 +95,100 @@ var cpUpload = upload.array('images', 60)
 // 上传图片
 router.post("/", cpUpload, function(req, res, next) {
 
-
-
     // 存储在数据库中的图片路径数组
     var filesUrl = [];
-    // var errCount = 0;
 
-    // console.log(req, res, next)
-    // var form = new formidable.IncomingForm();
     var targetDir = path.join(__dirname, "../public/images");
-
-    //文件保存的目录
-    // form.uploadDir = targetDir;
-
-    // form.uploadDir = "./tmp"; //文件保存在系统临时目录
-    // form.maxFieldsSize = 100 * 1024 * 1024; //上传文件大小限制为最大10M
-    // form.keepExtensions = true; //使用文件的原扩展名
-
-
-    // 新建图片对象
-    // let picture = {};
-
-    // _fileParse();
-
-    // 文件解析与保存
-    // function _fileParse() {
-    // form.parse(req, function(err, fields, files) {
-    // if (err) throw err;
-    /* 
-          当用户使用form表单提交数据时，表单中可能会包含两类数据：文件/图片数据、普通表单数据。
-          formidable解析用户后，会将这两种数据分别放到files和fields两个回调参数中。
-          fields 是普通表单数据 
-          files 是文件数据
-          */
-    // console.log(fields, files)
+    //根据图片类型修改目标目录 
     switch (req.body.img_type) {
         case "1":
-            //根据图片类型修改目标目录 
-            targetDir = targetDir + "\\1";
+            targetDir = targetDir + "/1";
             break;
         case "2":
-            targetDir = targetDir + "\\2";
+            targetDir = targetDir + "/2";
             break;
         case "3":
-            targetDir = targetDir + "\\3";
+            targetDir = targetDir + "/3";
             break;
         case "4":
-            targetDir = targetDir + "\\4";
+            targetDir = targetDir + "/4";
             break;
         case "5":
-            targetDir = targetDir + "\\5";
+            targetDir = targetDir + "/5";
             break;
         case "6":
-            targetDir = targetDir + "\\6";
+            targetDir = targetDir + "/6";
             break;
         case "7":
-            targetDir = targetDir + "\\7";
+            targetDir = targetDir + "/7";
             break;
         case "8":
-            targetDir = targetDir + "\\8";
+            targetDir = targetDir + "/8";
     }
 
 
     var keys = Object.keys(req.files);
 
     keys.forEach(function(key) {
-        // 获得图片存储的临时路径  "tmp\upload_cef99b58c61476cc8b86406f44f88cf1.JPG"
-        // var filePath = files[key].path;
-        // console.log('图片临时存储路径' + filePath)
-        // 获得图片类型
-        // var fileExt = filePath.substring(filePath.lastIndexOf("."));
-        // if (".jpg.jpeg.png.gif".indexOf(fileExt.toLowerCase()) === -1) {
-        //     errCount += 1;
-        // } else {
-        //以当前时间戳对上传文件进行重命名
-        // var newName = new Date().getTime() + fileExt;
-
-        //改变名字（重命名），异步
-        // fs.rename(filePath, targetDir + "/" + newName, (err) => {
-        //         console.log(err)
-        // cb({
-        //     status: 2, //上传成功啦
-        //     params: params,
-        //     newName: newName,
-        //     msg: "上传成功"
-        // })
-        // })
-        // 获得图片的实际存储路径
-        // var targetFile = path.join(targetDir, fileName);
-        // console.log('图片实际上传路径：' + targetFile)
-
         //移动文件
-        console.log(req.files[key].path, targetDir + '/' + req.files[key].filename)
-        fs.renameSync(req.files[key].path, targetDir + '\\' + req.files[key].filename);
+        fs.renameSync(req.files[key].path, targetDir + '/' + req.files[key].filename);
+
+
+
+        var path = targetDir + '/' + req.files[key].filename;
+        var outpath = targetDir + '/mini/' + req.files[key].filename;
+        console.log(key)
+
+        let quality = 0;
+
+        if (key == 0) {
+            quality = 30
+        } else {
+            quality = 10
+        }
+
+        function compress(path, outpath) {
+            fs.stat(path, function(err, stat) {
+                if (err) { console.log(err); return; };
+                images(path).save(outpath, {
+                    quality: quality //保存图片到文件,图片质量为10
+                });
+            });
+        }
+
+        compress(path, outpath)
+
+
+        // var path = targetDir;
+        // var outpath = targetDir + '/mini/';
+
+        // function compress(path, outpath) {
+        //     fs.readdir(path, function(err, files) {
+        //         if (err) {
+        //             console.log('error:\n' + err);
+        //             return;
+        //         }
+
+        //         files.forEach(function(file) {
+        //             fs.stat(path + '/' + file, function(err, stat) {
+        //                 if (err) { console.log(err); return; }
+
+        //                 //遍历图片
+        //                 console.log('文件名:' + path + '/' + file);
+        //                 var name = path + '/' + file;
+        //                 var outName = outpath + file;
+
+        //                 images(name).save(outName, {
+        //                     quality: 10 //保存图片到文件,图片质量为10
+        //                 });
+        //             });
+
+        //         });
+
+        //     });
+        // }
+
+        // compress(path, outpath)
 
         // 图片的的Url（相对路径）添加到图片数组                    
         filesUrl.push("images/" + req.body.img_type + "/" + req.files[key].filename);
@@ -227,13 +231,13 @@ router.post("/", cpUpload, function(req, res, next) {
         if (err) {
             res.json({
                 statusCode: "100",
-                message: "插入失败"
+                message: "报名失败"
             });
         } else {
             // 返回前台投票成功的信息
             res.json({
-                statusCode: "0",
-                message: "上传成功",
+                statusCode: "200",
+                message: "报名成功",
                 data: doc
             });
         }
