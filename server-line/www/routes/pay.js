@@ -42,9 +42,18 @@ router.get("/", function(req, res, next) {
 
 
     // 查询条件
-    var wherestr = {
-        'qqOpenid': req.query.qqOpenid
-    };
+    if (req.query.qqOpenid) {
+        // console.log('qqOpenid is ' + req.query.qqOpenid)
+        var wherestr = {
+            'qqOpenid': req.query.qqOpenid
+        };
+    } else {
+        // console.log('tel is ' + req.query.tel)
+        var wherestr = {
+            'tel': req.query.tel
+        };
+    }
+
 
 
     // 待更新数据
@@ -207,6 +216,7 @@ router.post('/notify', xmlparser({
 
     // 根据订单金额判断vip类型
     let vipType = null;
+
     // 当前时间戳
     let nowTime = Date.now();
 

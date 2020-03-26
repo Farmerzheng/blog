@@ -82,6 +82,35 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 const config = require('./config');
+const http = require('http');
+
+//需要推送的网站链接
+
+setInterval(function() {
+    var content = "http://www.91alex.com";
+    //对应配置post推送的接口说明
+    var options = {
+        host: "data.zz.baidu.com",
+        path: 'http://data.zz.baidu.com/urls?site=www.91alex.com&token=jIODL3goMqJMLzrB', //接口的调用地址
+        method: "post",
+        "User-Agent": "curl/7.12.1",
+        headers: {
+            "Content-Type": "text/plain",
+            "Content-Length": content.length
+        }
+    };
+    var req = http.request(options, function(res) {
+        res.setEncoding("utf8");
+        res.on("data", function(data) {
+            console.log("baidu engine data:", data); //返回的数据
+        });
+    });
+    req.write(content);
+    req.end();
+}, 10000000)
+
+
+
 
 // 引入路由
 var indexRouter = require('./routes/index');
@@ -203,6 +232,7 @@ app.use('/weixin_action', shareRouter);
 app.use('/qq_login', qqLoginRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 

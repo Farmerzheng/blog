@@ -1,6 +1,6 @@
 var express = require("express");
 var Picture = require("../models/picture");
-
+var Video = require("../models/video");
 var images = require("images");
 
 //2、引入multer模块
@@ -38,7 +38,7 @@ var storage = multer.diskStorage({
 //设置过滤规则（可选）
 var imageFilter = function(req, file, cb) {
     var acceptableMime = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
-        //微信公众号只接收上述四种类型的图片
+        //只接收上述四种类型的图片
     if (acceptableMime.indexOf(file.mimetype) !== -1) {
         cb(null, true)
     } else {
@@ -48,7 +48,7 @@ var imageFilter = function(req, file, cb) {
 
 //设置限制（可选）
 var imageLimit = {
-    fieldSize: '20MB'
+    fieldSize: '50MB'
 }
 
 
@@ -90,7 +90,7 @@ upload.fields([{
 //     maxCount: 10
 // }])
 
-var cpUpload = upload.array('images', 60)
+var cpUpload = upload.array('images', 60);
 
 // 上传图片
 router.post("/", cpUpload, function(req, res, next) {
@@ -132,20 +132,14 @@ router.post("/", cpUpload, function(req, res, next) {
     keys.forEach(function(key) {
         //移动文件
         fs.renameSync(req.files[key].path, targetDir + '/' + req.files[key].filename);
-
-
-
         var path = targetDir + '/' + req.files[key].filename;
         var outpath = targetDir + '/mini/' + req.files[key].filename;
-        console.log(key)
-
         let quality = 0;
-
         if (key == 0) {
             quality = 30
         } else {
             quality = 10
-        }
+        };
 
         function compress(path, outpath) {
             fs.stat(path, function(err, stat) {
@@ -154,45 +148,11 @@ router.post("/", cpUpload, function(req, res, next) {
                     quality: quality //保存图片到文件,图片质量为10
                 });
             });
-        }
-
-        compress(path, outpath)
-
-
-        // var path = targetDir;
-        // var outpath = targetDir + '/mini/';
-
-        // function compress(path, outpath) {
-        //     fs.readdir(path, function(err, files) {
-        //         if (err) {
-        //             console.log('error:\n' + err);
-        //             return;
-        //         }
-
-        //         files.forEach(function(file) {
-        //             fs.stat(path + '/' + file, function(err, stat) {
-        //                 if (err) { console.log(err); return; }
-
-        //                 //遍历图片
-        //                 console.log('文件名:' + path + '/' + file);
-        //                 var name = path + '/' + file;
-        //                 var outName = outpath + file;
-
-        //                 images(name).save(outName, {
-        //                     quality: 10 //保存图片到文件,图片质量为10
-        //                 });
-        //             });
-
-        //         });
-
-        //     });
-        // }
-
-        // compress(path, outpath)
-
+        };
+        compress(path, outpath);
         // 图片的的Url（相对路径）添加到图片数组                    
         filesUrl.push("images/" + req.body.img_type + "/" + req.files[key].filename);
-        // }
+
     });
 
     var img_vip = req.body.img_vip == '1' ? true : false;
@@ -242,11 +202,105 @@ router.post("/", cpUpload, function(req, res, next) {
             });
         }
     });
-
     // 返回上传信息
     // res.json({ filesUrl: filesUrl, success: keys.length - errCount, error: errCount });
     // });
     // }
 });
 
+//设置保存规则
+var videoStorage = multer.diskStorage({
+
+    //指定文件上传到服务器的路径
+    destination: function(req, file, cb) {
+        // console.log(path.join(__dirname, "../public/images"));
+        // console.log('destination');
+        cb(null, path.join(__dirname, "../public/videos"));
+    },
+
+    //指定上传到服务器文件的名称
+    filename: function(req, file, cb) {
+        // 视频文件为原名称，不进行重命名
+
+        // 图片类型
+        // let extName = file.originalname.slice(file.originalname.lastIndexOf('.'));
+
+        //以当前时间戳对上传文件进行重命名
+        // var newName = new Date().getTime() + extName;
+
+        cb(null, file.originalname)
+    }
+});
+
+//设置限制（可选）
+var videoLimit = {
+    fieldSize: '100MB'
+}
+
+
+var videoUpload = multer({
+    storage: videoStorage,
+    // fileFilter: videoFilter,
+    limits: videoLimit
+})
+
+var cpVideoUpload = videoUpload.array('video', 2);
+// 上传视频
+router.post("/video", cpVideoUpload, function(req, res, next) {
+
+    console.log('uploaded');
+
+    console.log('video title is ' + req.body.video_title);
+    // console.log('video filename is ' + JSON.stringify(req.file.filename));
+
+    // 视频路径
+    var videoUrl = "videos/" + req.files[0].filename;
+
+    // 视频封面
+    var videoCoverUrl = 'videos/' + req.files[1].filename;
+
+    // 视频标题
+    var video_title = req.body.video_title;
+    //获取当前时间
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    };
+
+    //将学生数据存储在students 集合中
+    let videoSchema = new Video({
+        title: video_title,
+        time: getNowFormatDate(),
+        url: videoUrl,
+        videoCover: videoCoverUrl
+    });
+    videoSchema.save(function(err, doc) {
+        if (err) {
+            console.log('video upload err');
+            res.json({
+                statusCode: "100",
+                message: "上传失败"
+            });
+        } else {
+            console.log('video upload success');
+            // 返回前台投票成功的信息
+            res.json({
+                statusCode: "200",
+                message: "上传成功",
+                data: doc
+            });
+        }
+    });
+});
 module.exports = router;

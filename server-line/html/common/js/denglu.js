@@ -19,9 +19,21 @@ function qqLogin() {
     // var A = window.open('https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=' + qqAppID + '&redirect_uri=' + qqRedirect_uri + '&state=233&scope=get_user_info,list_album,upload_pic', "TencentLogin",
     //     "width=450,height=320,menubar=0,scrollbars=1,resizable = 1, status = 1, titlebar = 0, toolbar = 0, location = 1 ");
 
+    let qq_tel = $('#qq_tel').val();
+    var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+    if (reg.test(qq_tel)) {
+        // alert("邮箱格式正确");
+    } else {
+        alert("邮箱不正确");
+        return;
+    }
+
+
+
+
     //向服务器发送请求获取验证码
     Dingyuan.blogajax('GET', '/qq_login', {
-
+            tel: qq_tel
         },
         function(response) {
             console.log(response)
@@ -119,7 +131,7 @@ $('#loginBtn').on('click', function() {
         if (response.statusCode == '200') {
             alert('登录成功');
             // 返回主页
-            window.location.href = '../content/#new?page=1'
+            window.location.href = '../video'
         }
     }, function(error) {
         console.log('error')

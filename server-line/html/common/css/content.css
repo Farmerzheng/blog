@@ -69,13 +69,12 @@
          font-size: 16px;
      }
      
-     nav .nav-mask .nav-item {
+     nav .nav-mask a {
          position: relative;
          display: block;
          margin: 0 10px;
          height: 100%;
          color: #666;
-         ;
          -ms-flex-negative: 0;
          flex-shrink: 0;
          white-space: nowrap;
@@ -91,6 +90,48 @@
          justify-content: space-around;
          width: 100%;
          flex-wrap: wrap
+     }
+     
+     .vip {
+         position: relative;
+     }
+     
+     .no-vip {
+         position: relative;
+     }
+     
+     .vip::before {
+         position: absolute;
+         z-index: 100;
+         content: '精选图片';
+         display: block;
+         top: 0;
+         right: 0;
+         width: 70px;
+         height: 20px;
+         line-height: 20px;
+         background-color: #b41783;
+         color: #fff;
+         font-size: 13px;
+         letter-spacing: 2px;
+         border-radius: 0px 0px 0px 10px;
+     }
+     
+     .no-vip::before {
+         position: absolute;
+         z-index: 100;
+         content: '普通图片';
+         display: block;
+         top: 0;
+         right: 0;
+         width: 70px;
+         height: 20px;
+         line-height: 20px;
+         background-color: #fff;
+         color: #b41783;
+         font-size: 13px;
+         letter-spacing: 2px;
+         border-radius: 0px 0px 0px 10px;
      }
      
      .picture-item {
@@ -193,6 +234,14 @@
          .picture-item span {
              margin-top: 5px
          }
+     }
+     
+     .img-title {
+         margin: 0;
+         font-size: 14px;
+         height: 30px;
+         line-height: 30px;
+         margin-bottom: -5px;
      }
      
      @media (max-width: 767px) {}

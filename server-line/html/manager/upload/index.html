@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="街拍艺术馆致力于为广大街拍爱好者提供一个分享的平台，打造中国街拍第一站">
-    <meta name="keywords" content="街拍艺术馆，街拍美女，街拍包臀裙，街拍美腿，街拍超短裤，街拍美胸，街拍高跟">
-    <title>街拍艺术馆</title>
+    <meta name="keywords" content="街拍，图片，翘臀，包臀裙，美腿，超短裤，高跟">
+    <title>街拍艺术馆-包臀裙性感美腿高跟美女图片欣赏</title>
     <link rel="stylesheet" href="../../common/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../../favicon.ico">
     <link rel="stylesheet" href="../../common/css/upload.css">
@@ -37,7 +37,7 @@
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">图片标题</label>
             <div class="col-sm-10">
-                <input type="email" class="form-control" id="img_title" placeholder="请输入图片标题">
+                <input type="text" class="form-control" id="img_title" placeholder="请输入图片标题">
             </div>
         </div>
         <div class="form-group">
@@ -103,7 +103,20 @@
         <button class="btn btn-info btn-block" style='width: 80%;
     margin: 16px auto;' id='upload'>上传</button>
     </div>
-
+    <div style='text-align: center;line-height: 40px;'>
+        <div style='font-size: 20px'>视频上传</div>
+        <form id='form-video' style='width:7.5rem; position: relative;' enctype="multipart/form-data">
+            <div>请选择视频</div>
+            <input type="file" multiple='multiple' onchange="selectVideo(this);">
+            <div>请选择视频封面</div>
+            <input type="file" multiple='multiple' onchange="selectVideoCover(this);">
+        </form>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="video_title" placeholder="请输入视频标题">
+        </div>
+        <button class="btn btn-info btn-block" style='width: 80%;
+        margin: 16px auto;' id='upload_video'>上传</button>
+    </div>
 
 </body>
 <script src='../../common/js/jQuery.js'></script>

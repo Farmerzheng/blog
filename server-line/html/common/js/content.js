@@ -1,37 +1,6 @@
    $(document).ready(function() {
 
-       // 把location.search处理成一个对象
-       function parseUrlParams() {
-           if (window.location.search.length <= 0) return false;
-           var info = window.location.search.slice(1);
-           var result = {};
-           info.split('&').forEach(item => {
-               result[decodeURIComponent(item.split('=')[0])] = decodeURIComponent(item.split('=')[1]);
-           });
-           return result;
-       }
 
-       let paramsObj = parseUrlParams();
-
-       if (paramsObj) {
-
-           //向服务器发送请求获取验证码
-           Dingyuan.blogajax('GET', '/qq_login/get_info', {
-                   code: paramsObj.code
-               },
-               function(response) {
-                   console.log(response)
-                       // window.location.href = response.redirect_url;
-                       // if (response.statusCode == 100) {
-                       //     alert(response.message);
-                       //     window.location.href = '../zhuce'
-                       // }
-               },
-               function() {
-
-               })
-
-       }
 
 
 
@@ -105,55 +74,62 @@
                page: sessionStorage.getItem("page")
            },
            function(response) {
-               // console.log(response); //总的图片数
+               console.log(response.totalNum); //总的图片数
                // 分页插件
                $('.page').pagination({
                    coping: true,
                    totalData: response.totalNum,
-                   showData: 4,
+                   showData: 12,
                    count: 1, //当前页前后页码数
                    current: sessionStorage.getItem("page"), //当前页码
                    callback: function(api) {
-                       // 跳转到对应的页数
-                       // api.getCurrent();
-
                        sessionStorage.setItem("page", api.getCurrent());
-
-                       // console.log(api.getCurrent())
                        getPictureList();
                        window.scrollTo(0, 0);
-                       // 改变网页的url
-                       // window.location.href = Dingyuan.config.viewUrl + '/content' + location.hash.split(
-                       //         '?')[0] +
-                       //     '?page=' + pageIndex;
-                       // setTimeout(function() {
-                       //     window.location.reload();
-                       // }, 200)
-
-
-                       // console.log(pageIndex, location.href)
                    }
                });
 
                // 刷新页面
                $('.picture-list').html('');
                let dataArr = response.result;
-               console.log(dataArr)
+               //    console.log(dataArr)
 
                for (let i = 0; i < dataArr.length; i++) {
                    let data = dataArr[i];
 
+                   console.log(data.vip);
+                   //将图片链接拼接到mini图片文件夹
                    let imgSrc = data.list[0].split('/')[0] + '/' + data.list[0].split('/')[1] + '/mini/' + data.list[0].split('/')[2];
-                   let li = $('<li class="picture-item"' + 'id = "' + data._id + '" > ' +
+
+                   if (data.vip == true) {
+                       var li = $('<li class="picture-item vip"' + 'id = "' + data._id + '" > ' +
                            '<a>' +
-                           '<img src="' + Dingyuan.config.url + '/' + imgSrc + '">' +
+                           '<img src="' + Dingyuan.config.url + '/' + imgSrc + '"' +
+                           'alt=' + data.title +
+                           ' title=' + data.title +
+                           '>' +
                            '<div>' +
-                           '<span>' + data.title + '</span>' +
+                           '<h2 class="img-title">' + data.title + '</h2>' +
                            '<span class="time">' + data.time + '</span>' +
                            '</div>' +
                            '</a>' +
-                           '</li>')
-                       // 点击图片跳转到图片详情页
+                           '</li>');
+                   } else {
+                       var li = $('<li class="picture-item no-vip"' + 'id = "' + data._id + '" > ' +
+                           '<a>' +
+                           '<img src="' + Dingyuan.config.url + '/' + imgSrc + '"' +
+                           'alt=' + data.title +
+                           ' title=' + data.title +
+                           '>' +
+                           '<div>' +
+                           '<h2 class="img-title">' + data.title + '</h2>' +
+                           '<span class="time">' + data.time + '</span>' +
+                           '</div>' +
+                           '</a>' +
+                           '</li>');
+                   }
+
+                   // 点击图片跳转到图片详情页
                    li.on('click', function() {
                        // console.log($(this).attr('id'));
                        // window.id = $(this).attr('id');

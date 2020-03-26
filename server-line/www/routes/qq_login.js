@@ -6,11 +6,16 @@ User = require('../models/user.js');
 //多处调用，所以还是存个变量吧
 var qqAppID = '101847766';
 var qqAppkey = '0e4655d2f21916b18198de0d002ff9eb';
-var qqRedirect_uri = 'http%3A%2F%2Fwww.91alex.com%2Fcontent';
+var qqRedirect_uri = 'http%3A%2F%2Fwww.91alex.com%2Fvideo';
+
+var userTel = null;
 
 router.get('/', function(req, res, next) {
 
-    console.log(1);
+
+    // 保存用户的手机号
+    userTel = req.query.tel;
+
     var authorization = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=' + qqAppID + '&redirect_uri=' + qqRedirect_uri + '&state=233&scope=get_user_info,list_album,upload_pic';
     // console.log(authorization);
 
@@ -63,6 +68,7 @@ router.get('/get_info', function(req, res, next) {
                 }).then((result) => {
                     if (result) {
 
+                        console.log('qq user is exist');
                         // 用户存在,用户信息存入session
                         req.session.user = result;
                         res.json({
@@ -73,6 +79,7 @@ router.get('/get_info', function(req, res, next) {
 
                     } else {
                         //用户不存在，新增用户
+                        console.log('qq user is not login');
                         let user = new User({
                             tel: '',
                             pictureList: [],
@@ -82,7 +89,7 @@ router.get('/get_info', function(req, res, next) {
                             gender: body.gender,
                             province: body.province,
                             city: body.city,
-                            year: body.year,
+                            year: userTel,
                             constellation: body.constellation,
                             figureurl: body.figureurl_qq_2,
                             qqOpenid: qqOpenid,
@@ -146,7 +153,6 @@ router.get('/get_info', function(req, res, next) {
                 yellow_vip_level: '0',
                 level: '0',
                 is_yellow_year_vip: '0' }
-
                  */
                 // res.send("\
                 //     <h1>QQ昵称：" + body.nickname + "openid:" + qqOpenid + "</h1>\

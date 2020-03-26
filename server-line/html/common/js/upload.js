@@ -35,7 +35,7 @@
   // 定义图片数组，用来存放上传的图片
   var imgArr = [];
 
-  // 将选中图片展示在浏览器上
+  // 选择图片
   function selectImage(imgFile) {
       // 获取到图片文件
       var file = imgFile.files[0];
@@ -55,6 +55,22 @@
               '</div>');
           $('#uploadUL').prepend(li)
       }
+  }
+
+
+  // 选择视频
+  var videoFile = null;
+
+  function selectVideo(file) {
+      // 获取到图片文件
+      videoFile = file.files[0];
+  }
+
+  // 选择视频封面
+  var videoCover = null;
+
+  function selectVideoCover(file) {
+      videoCover = file.files[0];
   }
 
   let timer = null;
@@ -90,6 +106,40 @@
   // 点击按钮上传图片
   $('#upload').on('click', uploadHandler);
 
+  // 点击按钮上传视频
+  $('#upload_video').on('click', uploadHandler_video);
+
+  function uploadHandler_video() {
+      var formData = new FormData();
+
+      //   for (var i = 0; i < imgArr.length; i++) {
+      //       // 将图片添加到formData中
+      //       formData.append('images', imgArr[i]);
+      //       // console.log(imgArr[i])
+      //   }
+
+      // 将视频资源添加到formData中
+      formData.append('video', videoFile);
+      formData.append('video', videoCover);
+      formData.append('video_title', $('#video_title').val());
+      // 将图片类型存入formData
+      //   formData.append('img_type', $('#img_select').val());
+      //   formData.append('img_title', $('#img_title').val());
+      //   formData.append('img_vip', $('#img_vip').val());
+
+      var xhr = new XMLHttpRequest();
+      // var fd = new FormData(document.getElementById('form1'));
+
+      /* 事件监听 */
+      //   xhr.upload.addEventListener("progress", uploadProgress, false);
+      //   xhr.addEventListener("load", uploadComplete, false);
+      //   xhr.addEventListener("error", uploadFailed, false);
+      //   xhr.addEventListener("abort", uploadCanceled, false);
+      /* 下面的url一定要改成你要发送文件的服务器url */
+      xhr.open("POST", Dingyuan.config.url + '/upload/video');
+      xhr.send(formData);
+  }
+
   function uploadHandler() {
 
 
@@ -104,7 +154,7 @@
       // 将图片类型存入formData
       formData.append('img_type', $('#img_select').val());
       formData.append('img_title', $('#img_title').val());
-      formData.append('img_vip', $('#img_vip').val())
+      formData.append('img_vip', $('#img_vip').val());
 
       var xhr = new XMLHttpRequest();
       // var fd = new FormData(document.getElementById('form1'));

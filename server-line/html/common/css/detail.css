@@ -205,6 +205,16 @@
         filter: blur(2px);
     }
     
+    .video-btn {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto
+    }
+    
+    .video-btn img {
+        width: 100%;
+    }
+    
     @media (max-width: 1068px) {
         .wrap {
             left: 0;
@@ -254,6 +264,15 @@
     
     .vip .vip-tips {
         color: #b41783;
+        margin-bottom: 20px
+    }
+    
+    .vip .vip-tips div {
+        width: 300px;
+        margin: 0 auto;
+        line-height: 1.6;
+        text-align: left;
+        font-size: 16px
     }
     
     .vip .vip-btn {

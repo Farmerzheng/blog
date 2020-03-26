@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?2ee397c6441d13949c200cd222c06a7f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="街拍艺术馆致力于为广大街拍爱好者提供一个分享的平台，打造中国街拍第一站">
-    <meta name="keywords" content="街拍艺术馆，街拍美女，街拍包臀裙，街拍美腿，街拍超短裤，街拍美胸，街拍高跟">
+    <meta name="keywords" content="街拍，图片，翘臀，包臀裙，美腿，超短裤，高跟">
     <link rel="stylesheet" type="" href="../common/css/cheap.css">
     <link rel="stylesheet" href="../common/css/sidebar.css">
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1539351_mchl12rjkbh.css">
-    <title>街拍艺术馆</title>
-    <script>
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?7b14ecb56006eebb5f9f2da9354d0e3a";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
+    <title>街拍艺术馆-包臀裙性感美腿高跟美女图片欣赏</title>
+
+
 
 </head>
 
@@ -112,12 +114,19 @@
         </ul>
     </div>
     <div class="vip-des">
-        <p>青铜会员：欣赏5套更新</p>
-        <p>白银会员：欣赏未来一月更新及以往更新</p>
-        <p>黄金会员：欣赏未来一年更新及以往更新</p>
-        <p>钻石会员：未来所有更新免费看</p>
-        <p>唯美套图每日更新5~10套，感谢您的信任与支持</p>
+        <p>青铜会员：欣赏5套视频</p>
+        <p>白银会员：欣赏未来一月更新视频及以往更新</p>
+        <p>黄金会员：欣赏未来一年更新视频及以往更新</p>
+        <p>钻石会员：未来所有更新视频免费看</p>
+        <p>唯美视频每日更新，感谢您的信任与支持</p>
+        <p style='font-size:18px;color:red;line-height: 1.5;margin-right: .7rem;'>
+            支付遇到问题请跳转到手机浏览器浏览
+        </p>
+        <p style='font-size:18px;color:red;line-height: 1.5;margin-right: .7rem;'>
+            小站网址：www.91alex.com,欢迎收藏!
+        </p>
     </div>
+
     <button id='pay' class="pay-btn">微信支付</button>
     <div class="pay-show hidden" id='pay-show'>
         <div>请确认微信支付是否已完成</div>
@@ -203,7 +212,7 @@
             alert('请选择VIP类型');
             return;
         }
-        console.log(sessionStorage.getItem("qqOpenid"))
+        console.log('qqOpenid ' + sessionStorage.getItem("qqOpenid"))
         $.ajax({
             type: "get",
             url: Dingyuan.config.url + '/pay',
@@ -250,8 +259,8 @@
 
                     alert('恭喜您成为VIP');
 
-                    // 跳转到首页
-                    location.href = '../index.html';
+                    // 跳转到视频页
+                    location.href = 'http://www.91alex.com/video';
                 } else {
                     // alert('请先登录');
                     // return null;

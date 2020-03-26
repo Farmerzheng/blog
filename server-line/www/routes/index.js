@@ -1,11 +1,13 @@
 var express = require("express");
 var User = require("../models/user.js");
+var Video = require("../models/video.js");
 // 添加支持markdown发表文章的功能
 // var Article = require("../models/article");
 // var markdown = require('markdown').markdown;
 var Picture = require('../models/picture');
 // 引入操作表单的模块
 var router = express.Router();
+var http = require('http');
 
 
 /* 首页*/
@@ -65,14 +67,6 @@ router.get("/pictureNum", function(req, res, next) {
 // 读取首页图片信息
 router.get("/pictureList", function(req, res, next) {
 
-    // 用户没有登录
-    // if (!req.session.user) {
-    //     return res.json({
-    //         status: '100',
-    //         message: '请先登录'
-    //     })
-    // }
-
     // 每页显示的数据条数
     let perPage = Number(req.query.perPage);
     // 页数
@@ -92,11 +86,6 @@ router.get("/pictureList", function(req, res, next) {
                 message: '读取错误'
             })
         };
-        // 使用 markdown 发表文章
-        // articles.forEach(function(doc) {
-        //     doc.article = markdown.toHTML(doc.article)
-        // });
-        // console.log(articles)
         res.json({
             statusCode: '200',
             message: '读取成功',
@@ -110,45 +99,85 @@ router.get("/pictureList", function(req, res, next) {
 // 读取图片详情页信息
 router.get("/pictureDetail", function(req, res, next) {
 
+
+
     let picture = null;
 
-    // 根据图片id查询图片
-    Picture.find({
-        _id: req.query.id
-    }).then(response => {
+    let id = req.query.id;
+
+    console.log('id is ' + id);
+
+    // 如果浏览的是视频
+    if (id == 'video') {
+        vip('视频');
+
+    } else {
+        // 根据图片id查询图片
+        Picture.find({
+            _id: req.query.id
+        }).then(response => {
+            vip(response);
+        })
+    }
+
+
+
+    function vip(response) {
+
         picture = response;
 
+        /*
+            需要向百度推送的网站链接
+            http://www.91alex.com/detail/index.html?id=5e36508e76f1412aada3e5e6
+        */
+        var content = "http://www.91alex.com/detail/index.html?id=" + id;
+        // console.log('baidu engine url is ' + content);
+        //对应配置post推送的接口说明
+        var options = {
+            host: "data.zz.baidu.com",
+            path: 'http://data.zz.baidu.com/urls?site=www.91alex.com&token=jIODL3goMqJMLzrB', //接口的调用地址
+            method: "post",
+            "User-Agent": "curl/7.12.1",
+            headers: {
+                "Content-Type": "text/plain",
+                "Content-Length": content.length
+            }
+        };
+        var baiduReq = http.request(options, function(res) {
+            res.setEncoding("utf8");
+            res.on("data", function(data) {
+                console.log("baidu engine data:", data); //返回的数据
+            });
+        });
 
-        // 判断用户是否登录，未登录不允许看完整图片
-        // if (req.session.user) {
-        //     res.json({
-        //         statusCode: '200',
-        //         message: 'VIP用户',
-        //         result: picture
-        //     })
-        // } else {
-        //     res.json({
-        //         statusCode: '100',
-        //         message: '您还未登录',
-        //         result: picture
-        //     })
-        // }
+        baiduReq.write(content);
+        baiduReq.end();
 
-        // console.log(req);
+        console.log('user is ' + req.session.user);
 
         // 如果用户已经登录
         if (req.session.user) {
+
             if (req.session.user.tel) {
                 // 电话号码登录
                 let userTel = req.session.user.tel;
+
+                console.log('user tel is ' + userTel);
 
                 // 根据电话号码查找用户
                 User.find({
                     tel: userTel
                 }).then(user => {
-                    console.log('user' + user);
+
+                    // browsedPictures 自增 1 browsedPictures
+                    // console.log('user is ' + user);
+                    // console.log('user type is ' + typeof(user));
+                    // console.log('user stringify is ' + JSON.stringify(user));
+                    // console.log('user tel is ' + user[0].tel);
+                    // console.log('user browsed pictures is ' + user[0].browsedPictures);
+
                     // 判断用户浏览的图片数量
-                    if (user.browsedPictures > 5) {
+                    if (user[0].browsedPictures > 0) {
 
                         /**
                            浏览数量大于5套，判断是否是VIP，是VIP 继续浏览，不是不能浏览
@@ -159,7 +188,8 @@ router.get("/pictureDetail", function(req, res, next) {
                            vip 3  浏览100年
                          */
 
-                        let vip = user.vip;
+                        let vip = user[0].vip;
+                        console.log('vip is' + vip);
                         if (vip == '') {
                             // 不是vip
                             res.json({
@@ -170,7 +200,7 @@ router.get("/pictureDetail", function(req, res, next) {
                         } else {
                             // 是VIP
                             if (vip == 0) {
-                                // 允许浏览5张图片，把browsedPictures变成0
+                                // 允许浏览1个视频，把browsedPictures变成0
                                 // 将vip重置成空字符串
 
                                 // 查询条件
@@ -182,10 +212,11 @@ router.get("/pictureDetail", function(req, res, next) {
                                 // 待更新数据
                                 var updatestr = {
                                     vip: '',
-                                    browsedPictures: 0
+                                    browsedPictures: -10
                                 };
 
                                 User.updateOne(wherestr, updatestr, function(err, response) {
+                                    console.log('update user vip to zero')
                                     res.json({
                                         statusCode: '200',
                                         message: '您是vip=0会员',
@@ -198,7 +229,7 @@ router.get("/pictureDetail", function(req, res, next) {
                             } else {
                                 // 根据时间判断用户是否有浏览权限
                                 //  vip截止时间
-                                let expirationTime = user.expirationTime;
+                                let expirationTime = user[0].expirationTime;
 
                                 // 当前时间戳
                                 let nowTime = Date.now();
@@ -224,28 +255,25 @@ router.get("/pictureDetail", function(req, res, next) {
                             }
                         }
 
-
                     } else {
-                        // browsedPictures 自增 1
-
+                        if (id != 'video') {
+                            // 如果浏览的不是视频不进行加权，直接返回
+                            return;
+                        }
                         // 查询条件
                         var wherestr = {
                             'tel': userTel
                         };
-
-
                         // 待更新数据
                         var updatestr = {
-                            browsedPictures: user.browsedPictures + 1
+                            browsedPictures: user[0].browsedPictures + 1
                         };
-
                         User.updateOne(wherestr, updatestr, function(err, response) {
                             res.json({
                                 statusCode: '200',
                                 message: '未达到浏览量上线',
                                 result: picture
-                            })
-
+                            });
                         });
 
                     }
@@ -253,13 +281,15 @@ router.get("/pictureDetail", function(req, res, next) {
                 })
             } else {
                 // QQ登录
-                console.log(req.session.user.qqOpenid);
+                // console.log(req.session.user.qqOpenid);
                 User.findOne({
                     qqOpenid: req.session.user.qqOpenid
                 }).then(user => {
-                    console.log('user' + user);
+
+
+                    // console.log('user is ' + user);
                     // 判断用户浏览的图片数量
-                    if (user.browsedPictures > 4) {
+                    if (user.browsedPictures > 0) {
 
                         /**
                            浏览数量大于5套，判断是否是VIP，是VIP 继续浏览，不是不能浏览
@@ -293,9 +323,8 @@ router.get("/pictureDetail", function(req, res, next) {
                                 // 待更新数据
                                 var updatestr = {
                                     vip: '',
-                                    browsedPictures: 0
+                                    browsedPictures: -10
                                 };
-
                                 User.updateOne(wherestr, updatestr, function(err, response) {
                                     res.json({
                                         statusCode: '200',
@@ -304,17 +333,12 @@ router.get("/pictureDetail", function(req, res, next) {
                                     })
 
                                 });
-
-
                             } else {
                                 // 根据时间判断用户是否有浏览权限
                                 //  vip截止时间
                                 let expirationTime = user.expirationTime;
-
                                 // 当前时间戳
                                 let nowTime = Date.now();
-                                // console.log(Number(expirationTime) - Number(nowTime));
-
                                 if (Number(expirationTime) - Number(nowTime) > 0) {
                                     console.log('vip is not expire');
                                     // 用户的VIP权限没有到期
@@ -336,25 +360,24 @@ router.get("/pictureDetail", function(req, res, next) {
                         }
 
                     } else {
-                        // browsedPictures 自增 1
+                        if (id != 'video') {
+                            // 如果浏览的不是视频不进行加权，直接返回
+                            return;
+                        }
                         // 查询条件
                         var wherestr = {
                             'qqOpenid': user.qqOpenid
                         };
-
-
                         // 待更新数据
                         var updatestr = {
                             browsedPictures: user.browsedPictures + 1
                         };
-
                         User.updateOne(wherestr, updatestr, function(err, response) {
                             res.json({
                                 statusCode: '200',
                                 message: '未达到浏览量上线',
                                 result: picture
-                            })
-
+                            });
                         });
                     }
 
@@ -367,12 +390,14 @@ router.get("/pictureDetail", function(req, res, next) {
                 result: picture
             })
         }
-    })
+    }
 
 });
 
 // 读取图片分类信息
 router.get("/pictureType", function(req, res, next) {
+
+
 
     // 重新记录用户登录状态
     // req.session.user = req.session.user;
@@ -416,77 +441,66 @@ router.get("/pictureType", function(req, res, next) {
     }
 
     // 获取对应分类图片的总数
-    let totalNum = 0;
+    // var totalNum = 0;
     if (type == '0') {
-        Picture.find({}).then(res => {
-            totalNum = res.length;
-        })
-    } else {
-        Picture.find({
-            type: type
-        }).then(res => {
-            totalNum = res.length;
-        })
-    }
-    //获取图片信息
-    if (type == '0') {
-        // 如果是最新图片
-        Picture.find({}).sort({ time: -1 }).skip((page - 1) * perPage).limit(perPage).exec(function(err, pictures) {
-            if (err) {
+        Picture.find({}).then(response => {
+            // console.log('totalNum' + res.length)
+            totalNum = response.length;
+            // 如果是最新图片
+            Picture.find({}).sort({ time: -1 }).skip((page - 1) * perPage).limit(perPage).exec(function(err, pictures) {
+                if (err) {
+                    res.json({
+                        statusCode: '101',
+                        message: '读取错误'
+                    })
+                    return;
+                };
+                console.log('totalNum' + totalNum)
                 res.json({
-                    statusCode: '101',
-                    message: '读取错误'
+                    statusCode: '200',
+                    message: '读取成功',
+                    result: pictures,
+                    totalNum: totalNum
                 })
-                return;
-            };
-            res.json({
-                statusCode: '200',
-                message: '读取成功',
-                result: pictures,
-                totalNum: totalNum
             })
         })
-
     } else {
-        // 如果是分类图片
         Picture.find({
             type: type
-        }).skip((page - 1) * perPage).limit(perPage).exec(function(err, pictures) {
-            if (err) {
+        }).then(response => {
+            // console.log('totalNum' + res.length)
+            totalNum = response.length;
+            // 如果是分类图片
+            Picture.find({
+                type: type
+            }).sort({ time: -1 }).skip((page - 1) * perPage).limit(perPage).exec(function(err, pictures) {
+                if (err) {
+                    res.json({
+                        statusCode: '101',
+                        message: '读取错误'
+                    });
+                    return;
+                };
+                console.log('totalNum' + totalNum)
                 res.json({
-                    statusCode: '101',
-                    message: '读取错误'
-                });
-                return;
-            };
-            res.json({
-                statusCode: '200',
-                message: '读取成功',
-                result: pictures,
-                totalNum: totalNum
+                    statusCode: '200',
+                    message: '读取成功',
+                    result: pictures,
+                    totalNum: totalNum
+                })
             })
         })
     }
+
 });
 
-// 读取用户信息信息
+// 读取注册用户信息信息
 router.get("/users", function(req, res, next) {
-
-    // 用户没有登录
-    // if (!req.session.user) {
-    //     return res.json({
-    //         status: '100',
-    //         message: '请先登录'
-    //     })
-    // }
-
     // 每页显示的数据条数
     let perPage = Number(req.query.perPage);
     // 页数
     let page = req.query.page;
     // 用户已经登录
-
-
     User.find({
         // name: req.session.user.name
     }).sort({ _id: -1 }).skip((page - 1) * perPage).limit(perPage).exec(function(err, users) {
@@ -499,19 +513,43 @@ router.get("/users", function(req, res, next) {
                 message: '读取错误'
             })
         };
-        // 使用 markdown 发表文章
-        // articles.forEach(function(doc) {
-        //     doc.article = markdown.toHTML(doc.article)
-        // });
-        // console.log(articles)
         res.json({
             statusCode: '200',
             message: '读取成功',
             result: users
         })
     })
+});
 
+// 读取视频列表信息
+router.get("/videos", function(req, res, next) {
+    // 每页显示的数据条数
+    let perPage = Number(req.query.perPage);
+    // 页数
+    let page = req.query.page;
 
+    Video.find({}).then(response => {
+        let totalNum = response.length;
+
+        // 用户已经登录
+        Video.find({
+            // name: req.session.user.name
+        }).sort({ _id: -1 }).skip((page - 1) * perPage).limit(perPage).exec(function(err, videos) {
+            if (err) {
+                res.json({
+                    statusCode: '101',
+                    message: '读取错误'
+                })
+            };
+            res.json({
+                statusCode: '200',
+                message: '读取成功',
+                result: videos,
+                totalNum: totalNum
+            })
+        })
+
+    })
 });
 
 module.exports = router;
